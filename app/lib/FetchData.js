@@ -19,7 +19,7 @@ export async function fetchAllDailymotionData() {
 
     try {
          const res = await fetch(url, {
-        cache: 'no-store',
+        cache: 'force-cache',
         headers: {
           'User-Agent':
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/90.0.4430.85 Safari/537.36',
