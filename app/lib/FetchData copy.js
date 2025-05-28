@@ -1,36 +1,48 @@
-import { API_URL_DATA } from "./apilist";
-
+import { API_URL_DATA } from './apilist';
 
 const VIDEO_FIELDS =
   'id,thumbnail_240_url,url,title,description,created_time,duration,owner.screenname,owner.username,channel,onair';
 
 export async function fetchAllDailymotionData() {
   const fetches = API_URL_DATA.map(async (item) => {
-    let url = '';
-    let type = item.isPlaylist? true:false
-    let isFeturedChannel = item.title_slug === 'featured-channels' ? true : false;
-    let title = item.title
+    const isPlaylist = item.isPlaylist;
+    const isFeaturedChannel = item.title_slug === 'featured-channels';
+    const title = item.title;
 
-    if (!item.isPlaylist) {
+    let url = '';
+
+    if (!isPlaylist) {
       url = `https://api.dailymotion.com/playlist/${item.playlist_id}/videos?fields=${VIDEO_FIELDS}&limit=7&page=1`;
-      
     } else {
       url = `https://api.dailymotion.com/playlists/?fields=name,id,thumbnail_240_url,videos_total&ids=${item.playlist_id}`;
     }
 
-    // if(item.title_slug == 'trending-videos'){
-    //   console.log(url)
-    // }
-
-    
     try {
-      const res = await fetch(url, { cache: 'no-store' });
+         const res = await fetch(url, {
+        cache: 'force-cache',
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/90.0.4430.85 Safari/537.36',
+        },
+      });
       const data = await res.json();
-    //   return [data]
-      return {  data,type,isFeturedChannel,title };
+
+      return {
+        title,
+        title_slug: item.title_slug,
+        isPlaylist,
+        isFeaturedChannel,
+        data,
+      };
     } catch (err) {
-      console.error(`Error fetching ${item.title}:`, err);
-      return { ...item, data: null };
+      console.error(`Error fetching ${title}:`, err);
+      return {
+        title,
+        title_slug: item.title_slug,
+        isPlaylist,
+        isFeaturedChannel,
+        data: null,
+      };
     }
   });
 

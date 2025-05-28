@@ -9,89 +9,6 @@ import HeadingText from "./HeadingText";
 // Dynamically import react-slick (client-only)
 const Slider = dynamic(() => import("react-slick"), { ssr: false });
 
-const sampleData = [
-  {
-    id: 1,
-    thumbnail: "https://s2.dmcdn.net/v/Y8_kK1e9Aock52MMy/x240",
-    dailymotionId: "x9h0ql0",
-    title: "Suresh Dhas Live",
-    description:
-      "Sharad Ponkshe : बीडमध्ये प्रयोग संपताच शरद पोंक्षेंच्या संतापाचा उद्रेक, कुणाकुणाला सुनावलं?",
-    time: "423",
-    date: "1739959989",
-  },
-  {
-    id: 2,
-    thumbnail: "https://s1.dmcdn.net/v/Xvzdm1e0HJvKcqkUD/x240",
-    dailymotionId: "x9eo9v4",
-    title: "समारोपाचं अभिनंदन",
-    description:
-      "Sharad Ponkshe : बीडमध्ये प्रयोग संपताच शरद पोंक्षेंच्या संतापाचा उद्रेक, कुणाकुणाला सुनावलं?",
-    time: "423",
-    date: "1739952910",
-  },
-  {
-    id: 3,
-    thumbnail: "https://s2.dmcdn.net/v/XhTg01e9AocVtwRS4/x240",
-    dailymotionId: "x9cet1c",
-    title: "समारोपाचं अभिनंदन",
-    description:
-      "Sharad Ponkshe : बीडमध्ये प्रयोग संपताच शरद पोंक्षेंच्या संतापाचा उद्रेक, कुणाकुणाला सुनावलं?",
-    time: "423",
-    date: "1738959989",
-  },
-  {
-    id: 4,
-    thumbnail: "https://s2.dmcdn.net/v/XhTg01e9AocVtwRS4/x240",
-    dailymotionId: "x9b19t0",
-    title: "समारोपाचं अभिनंदन",
-    description:
-      "Sharad Ponkshe : बीडमध्ये प्रयोग संपताच शरद पोंक्षेंच्या संतापाचा उद्रेक, कुणाकुणाला सुनावलं?",
-    time: "423",
-    date: "1739955989",
-  },
-  {
-    id: 5,
-    thumbnail: "https://s2.dmcdn.net/v/XhTg01e9AocVtwRS4/x240",
-    dailymotionId: "x9b19t0",
-    title: "समारोपाचं अभिनंदन",
-    description:
-      "Sharad Ponkshe : बीडमध्ये प्रयोग संपताच शरद पोंक्षेंच्या संतापाचा उद्रेक, कुणाकुणाला सुनावलं?",
-    time: "423",
-    date: "1739943989",
-  },
-  {
-    id: 6,
-    thumbnail: "https://s2.dmcdn.net/v/XhTg01e9AocVtwRS4/x240",
-    dailymotionId: "x9b19t0",
-    title: "समारोपाचं अभिनंदन",
-    description:
-      "Sharad Ponkshe : बीडमध्ये प्रयोग संपताच शरद पोंक्षेंच्या संतापाचा उद्रेक, कुणाकुणाला सुनावलं?",
-    time: "423",
-    date: "1739959989",
-  },
-  {
-    id: 7,
-    thumbnail: "https://s2.dmcdn.net/v/XhTg01e9AocVtwRS4/x240",
-    dailymotionId: "x9b19t0",
-    title: "समारोपाचं अभिनंदन",
-    description:
-      "Sharad Ponkshe : बीडमध्ये प्रयोग संपताच शरद पोंक्षेंच्या संतापाचा उद्रेक, कुणाकुणाला सुनावलं?",
-    time: "423",
-    date: "1739959920",
-  },
-  {
-    id: 8,
-    thumbnail: "https://s2.dmcdn.net/v/XhTg01e9AocVtwRS4/x240",
-    dailymotionId: "x9b19t0",
-    title: "समारोपाचं अभिनंदन",
-    description:
-      "Sharad Ponkshe : बीडमध्ये प्रयोग संपताच शरद पोंक्षेंच्या संतापाचा उद्रेक, कुणाकुणाला सुनावलं?",
-    time: "423",
-    date: "1739959989",
-  },
-];
-
 const CustomNextArrow = ({ onClick }) => (
   <div
     onClick={onClick}
@@ -111,12 +28,13 @@ const CustomPrevArrow = ({ onClick }) => (
 );
 
 const HoverPreviewCard = ({ video }) => {
+  // console.log(video);
   const [showIframe, setShowIframe] = useState(false);
   const [timer, setTimer] = useState(null);
   const [hovered, setHovered] = useState(false);
 
-  const minutes = Math.floor(video.time / 60);
-  const seconds = video.time % 60;
+  const minutes = Math.floor(video.duration / 60);
+  const seconds = video.duration % 60;
   const formattedDuration = `${String(minutes).padStart(2, "0")}:${String(
     seconds
   ).padStart(2, "0")}`;
@@ -126,7 +44,7 @@ const HoverPreviewCard = ({ video }) => {
     month: "short",
     year: "numeric",
     timeZone: "UTC",
-  }).format(new Date(video.date * 1000));
+  }).format(new Date(video.created_time * 1000));
 
   const handleMouseEnter = () => {
     setHovered(true);
@@ -149,14 +67,14 @@ const HoverPreviewCard = ({ video }) => {
       <div className="group relative w-full pt-[56.25%] overflow-hidden rounded shadow-md">
         {showIframe ? (
           <iframe
-            src={`https://www.dailymotion.com/widget/preview/video/${video.dailymotionId}?title=none&duration=none&mode=video&trigger=auto`}
+            src={`https://www.dailymotion.com/widget/preview/video/${video.id}?title=none&duration=none&mode=video&trigger=auto`}
             allow="autoplay"
             allowFullScreen
             className="absolute inset-0 w-full h-full"
           />
         ) : (
           <Image
-            src={video.thumbnail}
+            src={video.thumbnail_240_url}
             alt={video.title}
             fill
             sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 20vw"
@@ -188,27 +106,60 @@ const HoverPreviewCard = ({ video }) => {
       <div className="text-xs px-1">
         <div className="text-yellow-300 text-[13px] mb-2">{formattedDate}</div>
         <div className="text-[15px] text-yellow-400 font-medium leading-snug line-clamp-3">
-          {video.description}
+          {video.title}
         </div>
       </div>
     </div>
   );
 };
 
-const VideoCarousel = ({ data }) => {
-  // console.log(data);
-  const [isMobile, setIsMobile] = useState(false);
-  const [hasMounted, setHasMounted] = useState(false);
+/////////////////////////////
+// testing
 
-  useEffect(() => {
-    setHasMounted(true);
-    const checkScreen = () => {
-      setIsMobile(window.innerWidth < 640);
-    };
-    checkScreen();
-    window.addEventListener("resize", checkScreen);
-    return () => window.removeEventListener("resize", checkScreen);
-  }, []);
+////////////////////////////////
+
+const VideoCarousel = ({ title, slug, data }) => {
+  // console.log(data);
+  // console.table(title + "-----" + id);
+
+  const [isMobile, setIsMobile] = useState(false);
+  // const [hasMounted, setHasMounted] = useState(false);
+
+  // const [data, setData] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `https://api.dailymotion.com/playlist/${id}/videos?fields=id,thumbnail_240_url,url,title,description,created_time,duration,owner.screenname,owner.username,channel,onair&limit=7&page=1`,
+  //         {
+  //           headers: {
+  //             "User-Agent": "Mozilla/5.0 Chrome/90.0 Safari/537.36",
+  //           },
+  //           cache: "force-cache",
+  //         }
+  //       );
+  //       const result = await response.json();
+  //       setData(result);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [id]);
+
+  // console.log(data);
+
+  // useEffect(() => {
+  //   setHasMounted(true);
+  //   const checkScreen = () => {
+  //     setIsMobile(window.innerWidth < 640);
+  //   };
+  //   checkScreen();
+  //   window.addEventListener("resize", checkScreen);
+  //   return () => window.removeEventListener("resize", checkScreen);
+  // }, []);
 
   const settings = {
     infinite: false,
@@ -226,11 +177,11 @@ const VideoCarousel = ({ data }) => {
 
   return (
     <div className="px-2 mb-14">
-      <HeadingText name="Trending Videos" link="/" />
+      <HeadingText name={title} link={slug} />
 
       {isMobile ? (
         <div className="flex space-x-2 overflow-x-auto scrollbar-hide mt-4">
-          {data?.map((video) => (
+          {data?.list?.map((video) => (
             <div key={video.id} className="min-w-[60%]">
               <HoverPreviewCard video={video} />
             </div>
@@ -239,7 +190,7 @@ const VideoCarousel = ({ data }) => {
       ) : (
         <div className="-mx-2 relative m-4">
           <Slider {...settings}>
-            {data?.data?.list.map((video) => (
+            {data?.list?.map((video) => (
               <div key={video.id} className="px-3">
                 <HoverPreviewCard video={video} />
               </div>

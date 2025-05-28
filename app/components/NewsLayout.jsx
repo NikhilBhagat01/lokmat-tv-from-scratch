@@ -7,48 +7,6 @@ import HeadingText from "./HeadingText";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const newsItems = [
-  {
-    img: "https://s1.dmcdn.net/v/YN7X61e9AhsWdKdN1/x240",
-    title:
-      "या चार लोकांमुळे २५ कोटी लोक धोक्यात… पाकिस्तानला कोण बुडवतंय? Pakistan's Enemies",
-    vidId: "x9j830m",
-  },
-  {
-    img: "https://s1.dmcdn.net/v/YN6yg1e9AgmPdaGXd/x240",
-    title: "सोफिया कुरेशींनी पाकचा लबाडपणा उघड केला_1",
-    vidId: "x9j817u",
-  },
-  {
-    img: "https://s2.dmcdn.net/v/YN6NE1e7r0Sz2-ipG/x240",
-    title: "सरपंचानं सगळ्यांना हैराण करुन सोडलं, एक आंदोलन राज्यभर का गाजलं?",
-    vidId: "x9j7zda",
-  },
-  {
-    img: "https://s1.dmcdn.net/v/YN62k1e8nJ9F9FuMN/x240",
-    title:
-      "S400 Air Defence System : दिवंगत मनोहर पर्रीकर यांचा तो एक निर्णय, भारताची ताकद कशी वाढली? SA3",
-    vidId: "x9j7ycu",
-  },
-  {
-    img: "https://s1.dmcdn.net/v/YN5ri1e7ZgKGchoIZ/x240",
-    title:
-      "...जेव्हा पाकला रवीना टंडनकडून मिसाईल पाठवण्यात आलेलं, काय घडलेलं? Raveena Tandon Missile Story",
-    vidId: "x9j7xpo",
-  },
-  {
-    img: "https://s2.dmcdn.net/v/YN56g1e8c9SSrufvX/x240",
-    title: "बदला पूर्ण झाला मेहबुबा मुफ्ती रडल्या मोदींना विनंती काय",
-    vidId: "x9j7ve2",
-  },
-  {
-    img: "https://s1.dmcdn.net/v/YM_C-1e7XhpTxkXTF/x240",
-    title:
-      "अंगावर अक्षदा पडताच जवानाला सीमेवर हजर राहण्याचे आदेश | Orders To Appear At The Border",
-    vidId: "x9j7cqm",
-  },
-];
-
 const CustomPrevArrow = ({ onClick }) => (
   <div
     onClick={onClick}
@@ -67,7 +25,8 @@ const CustomNextArrow = ({ onClick }) => (
   </div>
 );
 
-export default function NewsLayout({ data }) {
+export default function NewsLayout({ data, title, slug }) {
+  // console.log(data);
   const [selectedItem, setSelectedItem] = useState(data[0]);
   const [showVideo, setShowVideo] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
@@ -176,7 +135,7 @@ export default function NewsLayout({ data }) {
       </div>
 
       {/* Carousel / List */}
-      <HeadingText name="Top Stories Today" link="/" />
+      <HeadingText name={title} link={`/${slug}`} />
       <div className="relative">
         {!isMobile ? (
           <>

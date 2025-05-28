@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 
 const HeadingText = ({ name, link }) => {
+  // console.log(link);
   return (
     <div className="flex items-center gap-4 px-3">
       <h3 className="text-[23px] font-semibold">{name}</h3>

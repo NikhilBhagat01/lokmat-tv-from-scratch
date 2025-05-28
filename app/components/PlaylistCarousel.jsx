@@ -5,62 +5,9 @@ import Slider from "react-slick";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
 import HeadingText from "./HeadingText";
 
-// Sample data with Dailymotion video IDs
-const featuredPlaylists = [
-  {
-    name: "Mahayudh",
-    id: "x86asy",
-    thumbnail_240_url: "https://s1.dmcdn.net/v/WQ-i61e0GUaoZvrAB/x240",
-    videos_total: 29,
-  },
-  {
-    name: "News & Views",
-    id: "x860li",
-    thumbnail_240_url: "https://s1.dmcdn.net/v/WQ-hm1clSFkSRH5V9/x240",
-    videos_total: 56,
-  },
-  {
-    name: "Hot & Trending in Sakhi",
-    id: "x7h8av",
-    thumbnail_240_url: "https://s2.dmcdn.net/v/TvAbo1e8nP6rIR2lb/x240",
-    videos_total: 133,
-  },
-  {
-    name: "Hot & Trending in Entertainment",
-    id: "x7h761",
-    thumbnail_240_url: null,
-    videos_total: 102,
-  },
-  {
-    name: "Trending Viral Videos",
-    id: "x7h75w",
-    thumbnail_240_url: "https://s2.dmcdn.net/v/XhTg01e9AocVtwRS4/x240",
-    videos_total: 98,
-  },
-  {
-    name: "Jyotish Shastra",
-    id: "x7h752",
-    thumbnail_240_url: "https://s2.dmcdn.net/v/V78CI1e0HJvwSmDKR/x240",
-    videos_total: 24,
-  },
-  {
-    name: "Inspirational Stories",
-    id: "x7h750",
-    thumbnail_240_url: "https://s2.dmcdn.net/v/U-zkw1clSs547cwJj/x240",
-    videos_total: 15,
-  },
-  {
-    name: "Hello Pune",
-    id: "x7h72r",
-    thumbnail_240_url: "https://s1.dmcdn.net/v/X-Gji1dmQuviyC_t5/x240",
-    videos_total: 234,
-  },
-];
-
 // Simple Dailymotion Card Component
 const DailymotionCard = ({ videoId, title, videoCount, thumbnailUrl }) => {
   // Construct the Dailymotion thumbnail URL
-
   return (
     <div className="relative cursor-pointer">
       <div className="relative overflow-hidden   rounded-lg ">
@@ -89,7 +36,9 @@ const DailymotionCard = ({ videoId, title, videoCount, thumbnailUrl }) => {
 };
 
 // Featured Playlists Carousel with React Slick
-export default function PlaylistsCarousel() {
+export default function PlaylistsCarousel({ data }) {
+  // console.log(data);
+  // console.log(data.data.list);
   // Custom arrow component for the slider
   const NextArrow = (props) => {
     const { className, style, onClick } = props;
@@ -157,10 +106,10 @@ export default function PlaylistsCarousel() {
 
       <div className="relative px-1">
         <Slider {...settings}>
-          {featuredPlaylists.map((playlist) => (
+          {data?.data?.list?.map((playlist) => (
             <div key={playlist.id} className="px-3">
               <DailymotionCard
-                videoId={playlist.videoId}
+                videoId={playlist.id}
                 title={playlist.name}
                 videoCount={playlist.videos_total}
                 thumbnailUrl={

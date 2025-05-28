@@ -56,6 +56,7 @@ const FeaturedCard = ({ channel }) => {
 };
 
 const Featuredchannel = ({ data }) => {
+  // console.log(data);
   return (
     <div className="px-4 mb-14">
       <h3 className="text-xl md:text-2xl font-semibold mb-4">
