@@ -37,7 +37,7 @@ const DailymotionCard = ({ videoId, title, videoCount, thumbnailUrl }) => {
 
 // Featured Playlists Carousel with React Slick
 export default function PlaylistsCarousel({ data }) {
-  // console.log(data);
+  console.log(data);
   // console.log(data.data.list);
   // Custom arrow component for the slider
   const NextArrow = (props) => {
@@ -101,7 +101,7 @@ export default function PlaylistsCarousel({ data }) {
   return (
     <div className=" mb-14 px-2">
       <div className="flex justify-between items-center mb-4">
-        <HeadingText name="Featured Playlists" link="/" />
+        <HeadingText name={data.title} link="/" />
       </div>
 
       <div className="relative px-1">

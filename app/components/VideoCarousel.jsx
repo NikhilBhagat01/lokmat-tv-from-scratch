@@ -181,7 +181,7 @@ const VideoCarousel = ({ title, slug, data }) => {
 
       {isMobile ? (
         <div className="flex space-x-2 overflow-x-auto scrollbar-hide mt-4">
-          {data?.list?.map((video) => (
+          {data?.map((video) => (
             <div key={video.id} className="min-w-[60%]">
               <HoverPreviewCard video={video} />
             </div>
@@ -190,7 +190,7 @@ const VideoCarousel = ({ title, slug, data }) => {
       ) : (
         <div className="-mx-2 relative m-4">
           <Slider {...settings}>
-            {data?.list?.map((video) => (
+            {data?.map((video) => (
               <div key={video.id} className="px-3">
                 <HoverPreviewCard video={video} />
               </div>

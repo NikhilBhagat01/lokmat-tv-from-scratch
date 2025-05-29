@@ -44,7 +44,7 @@ export default function NewsLayout({ data, title, slug }) {
       } else if (width < 1024) {
         setSlidesToShow(3);
       } else {
-        setSlidesToShow(7);
+        setSlidesToShow(6);
       }
     };
     updateSlidesToShow();

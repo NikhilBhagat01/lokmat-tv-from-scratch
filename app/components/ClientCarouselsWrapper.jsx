@@ -62,7 +62,6 @@ const ClientCarouselsWrapper = ({ carousels }) => {
             key={item.title_slug || index}
             title={item.title}
             slug={item.title_slug}
-            id={item.id}
             data={item.data?.list || []}
           />
         );
