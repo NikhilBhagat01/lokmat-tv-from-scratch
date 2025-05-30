@@ -9,12 +9,12 @@ import Link from "next/link";
 const NavLinks = [
   { name: "News", link: "/videos/news" },
   { name: "City News", link: "/videos/city-news" },
-  { name: "Entertainment", link: "/entertainment" },
-  { name: "Social Viral", link: "/social-viral" },
-  { name: "Sakhi", link: "/sakhi" },
-  { name: "Bhakti", link: "/bhakti" },
-  { name: "Events", link: "/events" },
-  { name: "Inspirational", link: "/inspirational" },
+  { name: "Entertainment", link: "/videos/entertainment" },
+  { name: "Social Viral", link: "/videos/social-viral" },
+  { name: "Sakhi", link: "/videos/sakhi" },
+  { name: "Bhakti", link: "/videos/bhakti" },
+  { name: "Events", link: "/videos/events" },
+  { name: "Inspirational", link: "/videos/inspirational" },
 ];
 
 const cityLinks = [

@@ -37,7 +37,7 @@ const DailymotionCard = ({ videoId, title, videoCount, thumbnailUrl }) => {
 
 // Featured Playlists Carousel with React Slick
 export default function PlaylistsCarousel({ data }) {
-  console.log(data);
+  // console.log(data);
   // console.log(data.data.list);
   // Custom arrow component for the slider
   const NextArrow = (props) => {
