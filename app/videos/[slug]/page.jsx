@@ -3,11 +3,9 @@
 
 import NewsLayout from "@/app/components/NewsLayout";
 import VideoCarousel from "@/app/components/VideoCarousel";
-import { CATEGORY_DATA } from "@/app/lib/apilist";
-import { fetchCategoryData, fetchCategoryDataBySlug } from "@/app/lib/FetchData";
+import { fetchCategoryDataBySlug } from "@/app/lib/FetchData";
 
 // import { API_URL_DATA, CATEGORY_DATA, CITY_DATA } from "@/app/lib/apilist";
-
 
 // const page = async({ params }) => {
 //   const { slug } = await params;
@@ -33,25 +31,19 @@ import { fetchCategoryData, fetchCategoryDataBySlug } from "@/app/lib/FetchData"
 
 // export default page;
 
-
-
-
-
-
-const page = async({ params }) => {
+const page = async ({ params }) => {
   const { slug } = await params;
   // const data = await fetchCategoryData(slug);
-  const data = await fetchCategoryDataBySlug(slug)
-  console.log('data',data)
+  const data = await fetchCategoryDataBySlug(slug);
+  console.log("data", data);
 
+  if (!data) return <h1>No Data</h1>;
 
-  if(!data) return <h1>No Data</h1>
-
-const firstPlaylist = data?.playlists[0] || [];
-  const topStories =firstPlaylist?.videos || [];
+  const firstPlaylist = data?.playlists[0] || [];
+  const topStories = firstPlaylist?.videos || [];
 
   const topStoriesTitle = firstPlaylist.playlistName;
-  const topStoriesSlug = firstPlaylist.slug
+  const topStoriesSlug = firstPlaylist.slug;
 
   // console.log('topStoriesSlug',topStoriesSlug)
   return (
@@ -74,24 +66,22 @@ const firstPlaylist = data?.playlists[0] || [];
         </pre>
       </div> */}
 
-      
       <NewsLayout
-            data={topStories}
-            title={topStoriesTitle}
-            slug={topStoriesSlug}
-          />
+        data={topStories}
+        title={topStoriesTitle}
+        slug={topStoriesSlug}
+      />
 
-        {data?.playlists?.slice(1).map((item,index)=>(
-          <VideoCarousel
-            key={index}
-            title={item.playlistName}
-            slug={item.slug}
-            data={item.videos}
-          />
-        ))}
+      {data?.playlists?.slice(1).map((item, index) => (
+        <VideoCarousel
+          key={index}
+          title={item.playlistName}
+          slug={item.slug}
+          data={item.videos}
+        />
+      ))}
 
-
-                  {/* <VideoCarousel
+      {/* <VideoCarousel
                 title={item.title}
                 slug={item.title_slug}
                 data={item?.data?.list || []}
