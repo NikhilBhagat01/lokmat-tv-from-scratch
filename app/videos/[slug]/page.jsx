@@ -1,4 +1,5 @@
 export const dynamic = "auto"; // ISR + cached fetch every 3 minutes
+export const revalidate = 180; // Revalidate the page itself every 180 seconds (3 minutes)
 
 import NewsLayout from "@/app/components/NewsLayout";
 import VideoCarousel from "@/app/components/VideoCarousel";
