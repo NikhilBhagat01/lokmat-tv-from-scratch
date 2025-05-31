@@ -1,4 +1,4 @@
-export const dynamic = "auto"; // ISR + cached fetch every 3 minutes
+export const dynamic = "auto"; // ISR + cached fetch every 3 minute
 
 import Featuredchannel from "./components/Featuredchannel";
 import NewsLayout from "./components/NewsLayout";
