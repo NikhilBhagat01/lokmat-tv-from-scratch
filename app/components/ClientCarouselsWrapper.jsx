@@ -14,7 +14,7 @@ const ClientCarouselsWrapper = ({ carousels }) => {
       const results = await Promise.all(
         carousels.map(async (item) => {
           const isFeaturedChannel = item.title_slug === "featured-channels";
-          // const id = item.playlist_id;
+          const id = item.playlist_id;
           let url = "";
           if (item.isPlaylist) {
             url = `https://api.dailymotion.com/playlists/?fields=name,id,thumbnail_240_url,videos_total&ids=${item.playlist_id}`;
@@ -26,10 +26,20 @@ const ClientCarouselsWrapper = ({ carousels }) => {
             const res = await fetch(url);
             const data = await res.json();
 
-            return { ...item, isFeaturedChannel, data }; // Merge original item with fetched data
+            return { 
+              ...item, 
+              isFeaturedChannel, 
+              data,
+              id
+            };
           } catch (err) {
             console.error("Error fetching:", item.url, err);
-            return { ...item, data: null, error: true };
+            return { 
+              ...item, 
+              data: null, 
+              error: true,
+              id
+            };
           }
         })
       );
@@ -44,6 +54,7 @@ const ClientCarouselsWrapper = ({ carousels }) => {
     return <div className="text-white px-3">Loading carousels...</div>;
   }
 
+  console.log(fetchedData)
   return (
     <>
       {fetchedData.map((item, index) => {
@@ -57,13 +68,14 @@ const ClientCarouselsWrapper = ({ carousels }) => {
           );
         }
 
-        // Default to VideoCarousel
+        // Default to VideoCarousel with id prop
         return (
           <VideoCarousel
             key={item.title_slug || index}
             title={item.title}
             slug={item.title_slug}
             data={item.data?.list || []}
+            id={item.id}
           />
         );
       })}

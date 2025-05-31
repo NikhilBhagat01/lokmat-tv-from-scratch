@@ -40,6 +40,8 @@ function ErrorSection({ title, error }) {
 export default async function Home() {
   const data = await fetchAllDailymotionData();
 
+  // console.log(data)
+
   // Handle case where all fetches failed
   if (!data || data.length === 0) {
     return (
@@ -55,6 +57,7 @@ export default async function Home() {
   const topStories = data[0]?.data?.list || [];
   const topStoriesTitle = data[0]?.title;
   const topStoriesSlug = data[0]?.title_slug;
+  const topStoriesId = data[0]?.id;
 
   const carousels = data.slice(1);
 
@@ -62,6 +65,7 @@ export default async function Home() {
   const ssrCarousels = data.slice(1); // First three items for SSR
   const csrCarousels = API_URL_DATA.slice(3);
 
+  // console.log(ssrCarousels)
   return (
     <>
       <Suspense fallback={<CarouselSkeleton />}>
@@ -72,6 +76,7 @@ export default async function Home() {
             data={topStories}
             title={topStoriesTitle}
             slug={topStoriesSlug}
+            id={topStoriesId}
           />
         )}
       </Suspense>
@@ -79,7 +84,7 @@ export default async function Home() {
       <div className="pl-3 pb-3 text-yellow-400">
         {/* SSR part */}
         {ssrCarousels.map((item, index) => (
-          <Suspense key={index} fallback={<CarouselSkeleton />}>
+          <Suspense Suspense key={index} fallback={< CarouselSkeleton />}>
             {item?.error ? (
               <ErrorSection title={item.title} error={item.error} />
             ) : item?.isFeaturedChannel ? (
@@ -91,6 +96,7 @@ export default async function Home() {
                 title={item.title}
                 slug={item.title_slug}
                 data={item?.data?.list || []}
+                id={item?.id}
               />
             )}
           </Suspense>
@@ -100,7 +106,7 @@ export default async function Home() {
         <Suspense fallback={<CarouselSkeleton />}>
           <ClientCarouselsWrapper carousels={csrCarousels} />
         </Suspense>
-      </div>
+      </div >
     </>
   );
 }
@@ -137,7 +143,7 @@ export async function generateMetadata() {
         description: "Watch trending news stories and playlists.",
         images: [
           topStory?.thumbnail_240_url ||
-            "https://yourdomain.com/twitter-image.jpg",
+          "https://yourdomain.com/twitter-image.jpg",
         ],
       },
     };

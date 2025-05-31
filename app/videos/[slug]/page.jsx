@@ -1,13 +1,23 @@
 export const dynamic = "auto"; // ISR + cached fetch every 3 minutes
 export const revalidate = 180; // Revalidate the page itself every 180 seconds (3 minutes)
 
+import ExpandPlaylist from "@/app/components/ExpandPlaylist";
 import NewsLayout from "@/app/components/NewsLayout";
 import VideoCarousel from "@/app/components/VideoCarousel";
 import { fetchCategoryDataBySlug } from "@/app/lib/FetchData";
 import { redirect } from "next/navigation";
 
-const page = async ({ params }) => {
+const page = async ({ params, searchParams }) => {
+  
   const { slug } = await params;
+  const {expand, videoId} = await searchParams;
+  // console.log(await params)
+  // console.log(expand)
+  // console.log(videoId)
+
+  if(expand && videoId){
+    return <ExpandPlaylist videoId={videoId} />
+  }
   // const data = await fetchCategoryData(slug);
   const data = await fetchCategoryDataBySlug(slug);
   // console.log("data", data);
@@ -19,6 +29,7 @@ const page = async ({ params }) => {
 
   const topStoriesTitle = firstPlaylist.playlistName;
   const topStoriesSlug = firstPlaylist.slug;
+  const topStoriesId = firstPlaylist.id;
 
   // console.log('topStoriesSlug',topStoriesSlug)
   return (
@@ -45,6 +56,7 @@ const page = async ({ params }) => {
         data={topStories}
         title={topStoriesTitle}
         slug={topStoriesSlug}
+        id={topStoriesId}
       />
 
       {data?.playlists?.slice(1).map((item, index) => (

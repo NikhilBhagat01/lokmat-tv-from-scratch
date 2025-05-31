@@ -25,7 +25,7 @@ const CustomNextArrow = ({ onClick }) => (
   </div>
 );
 
-export default function NewsLayout({ data, title, slug }) {
+export default function NewsLayout({ data, title, slug,id }) {
   // console.log(data);
   const [selectedItem, setSelectedItem] = useState(data[0]);
   const [showVideo, setShowVideo] = useState(false);
@@ -135,7 +135,7 @@ export default function NewsLayout({ data, title, slug }) {
       </div>
 
       {/* Carousel / List */}
-      <HeadingText name={title} link={`/${slug}`} />
+      <HeadingText name={title} link={`${slug}`} id={id} />
       <div className="relative">
         {!isMobile ? (
           <>

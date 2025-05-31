@@ -118,48 +118,13 @@ const HoverPreviewCard = ({ video }) => {
 
 ////////////////////////////////
 
-const VideoCarousel = ({ title, slug, data }) => {
+const VideoCarousel = ({ title, slug, data, id }) => {
   // console.log(data);
   // console.table(title + "-----" + id);
 
   const [isMobile, setIsMobile] = useState(false);
-  // const [hasMounted, setHasMounted] = useState(false);
-
-  // const [data, setData] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `https://api.dailymotion.com/playlist/${id}/videos?fields=id,thumbnail_240_url,url,title,description,created_time,duration,owner.screenname,owner.username,channel,onair&limit=7&page=1`,
-  //         {
-  //           headers: {
-  //             "User-Agent": "Mozilla/5.0 Chrome/90.0 Safari/537.36",
-  //           },
-  //           cache: "force-cache",
-  //         }
-  //       );
-  //       const result = await response.json();
-  //       setData(result);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [id]);
-
-  // console.log(data);
-
-  // useEffect(() => {
-  //   setHasMounted(true);
-  //   const checkScreen = () => {
-  //     setIsMobile(window.innerWidth < 640);
-  //   };
-  //   checkScreen();
-  //   window.addEventListener("resize", checkScreen);
-  //   return () => window.removeEventListener("resize", checkScreen);
-  // }, []);
+  
+ 
 
   const settings = {
     infinite: false,
@@ -177,7 +142,7 @@ const VideoCarousel = ({ title, slug, data }) => {
 
   return (
     <div className="px-2 mb-14">
-      <HeadingText name={title} link={slug} />
+      <HeadingText name={title} link={slug} id={id}  />
 
       {isMobile ? (
         <div className="flex space-x-2 overflow-x-auto scrollbar-hide mt-4">
