@@ -2,15 +2,16 @@
 
 import { API_URL_DATA, CATEGORY_DATA } from "./apilist";
 
-const VIDEO_FIELDS = 'id,thumbnail_240_url,url,title,description,created_time,duration,owner.screenname,owner.username,channel,onair';
+const VIDEO_FIELDS =
+  "id,thumbnail_240_url,url,title,description,created_time,duration,owner.screenname,owner.username,channel,onair";
 
 async function fetchAllDailymotionData() {
   const fetches = API_URL_DATA.slice(0, 3).map(async (item) => {
     // console.log(item)
     const isPlaylist = item.isPlaylist;
-    const isFeaturedChannel = item.title_slug === 'featured-channels';
+    const isFeaturedChannel = item.title_slug === "featured-channels";
     const title = item.title;
-    const id = item.playlist_id
+    const id = item.playlist_id;
 
     let url = isPlaylist
       ? `https://api.dailymotion.com/playlists/?fields=name,id,thumbnail_240_url,videos_total&ids=${item.playlist_id}`
@@ -19,9 +20,9 @@ async function fetchAllDailymotionData() {
     try {
       const res = await fetch(url, {
         headers: {
-          'User-Agent': 'Mozilla/5.0 Chrome/90.0 Safari/537.36',
+          "User-Agent": "Mozilla/5.0 Chrome/90.0 Safari/537.36",
         },
-        cache: 'force-cache',
+        next: { revalidate: 180 },
       });
       const data = await res.json();
 
@@ -33,7 +34,7 @@ async function fetchAllDailymotionData() {
         isPlaylist,
         isFeaturedChannel,
         data,
-        id
+        id,
       };
     } catch (err) {
       console.error(`Error fetching ${title}:`, err);
@@ -50,17 +51,16 @@ async function fetchAllDailymotionData() {
   return Promise.all(fetches);
 }
 
-
 async function fetchCategoryDataBySlug(slug) {
   // Find the category that matches the slug
-  const category = CATEGORY_DATA.find(item => item.slug === slug);
+  const category = CATEGORY_DATA.find((item) => item.slug === slug);
 
   if (!category) {
     console.error(`No category found for slug: ${slug}`);
     return null;
   }
 
-  const playlist = category.playlist.split(',');
+  const playlist = category.playlist.split(",");
 
   const playlistFetches = playlist.map(async (playlistId) => {
     const nameUrl = `https://api.dailymotion.com/playlist/${playlistId}/?fields=name`;
@@ -70,33 +70,32 @@ async function fetchCategoryDataBySlug(slug) {
       const [nameRes, videosRes] = await Promise.all([
         fetch(nameUrl, {
           headers: {
-            'User-Agent': 'Mozilla/5.0 Chrome/90.0 Safari/537.36',
+            "User-Agent": "Mozilla/5.0 Chrome/90.0 Safari/537.36",
           },
-          cache: 'no-store',
+          next: { revalidate: 180 },
         }),
         fetch(videosUrl, {
           headers: {
-            'User-Agent': 'Mozilla/5.0 Chrome/90.0 Safari/537.36',
+            "User-Agent": "Mozilla/5.0 Chrome/90.0 Safari/537.36",
           },
-          cache: 'no-store',
-        })
+          next: { revalidate: 180 }, // ✅ Revalidate every 3 min
+        }),
       ]);
 
       const [nameData, videosData] = await Promise.all([
         nameRes.json(),
-        videosRes.json()
+        videosRes.json(),
       ]);
 
-      const playlist_slug = nameData.name.replace(/\s+/g, '-').toLowerCase();
+      const playlist_slug = nameData.name.replace(/\s+/g, "-").toLowerCase();
 
       return {
         playlistName: nameData.name,
         videos: videosData.list || [],
         slug: playlist_slug,
-        id: playlistId // Remove any null results
+        id: playlistId, // Remove any null results
         // Ensure we return empty array if no videos
       };
-
     } catch (err) {
       console.error(`Error fetching playlist ${playlistId}:`, err);
       return null;
@@ -112,8 +111,6 @@ async function fetchCategoryDataBySlug(slug) {
     playlists: results.filter(Boolean),
   };
 }
-
-
 
 // async function fetchCategoryData(slug) {
 
@@ -149,12 +146,10 @@ async function fetchCategoryDataBySlug(slug) {
 //       slug: cat_slug,
 //     }
 
-
 //   })
 
 //   const results = await Promise.all(fetches);
 //   // console.log(results)
-
 
 //   // const fetches = CATEGORY_DATA.map(async (item) => {
 //   //   const playlist = item.playlist.split(',');
@@ -175,13 +170,7 @@ async function fetchCategoryDataBySlug(slug) {
 //   // return results;
 // }
 
-
 export { fetchAllDailymotionData, fetchCategoryDataBySlug };
-
-
-
-
-
 
 // // app/lib/fetchAllDailymotionData.ts
 

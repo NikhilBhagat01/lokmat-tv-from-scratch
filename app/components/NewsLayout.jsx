@@ -26,7 +26,7 @@ const CustomNextArrow = ({ onClick }) => (
 );
 
 export default function NewsLayout({ data, title, slug }) {
-  console.log(data);
+  // console.log(data);
   const [selectedItem, setSelectedItem] = useState(data[0]);
   const [showVideo, setShowVideo] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);

@@ -1,9 +1,11 @@
+export const dynamic = "auto"; // ISR + cached fetch every 3 minutes
+
 import Featuredchannel from "./components/Featuredchannel";
 import NewsLayout from "./components/NewsLayout";
 import PlaylistCarousel from "./components/PlaylistCarousel";
 import VideoCarousel from "./components/VideoCarousel";
 import { fetchAllDailymotionData } from "./lib/FetchData";
-import ClientCarouselsWrapper from "./components/ClientCarouselsWrapper"; // 
+import ClientCarouselsWrapper from "./components/ClientCarouselsWrapper"; //
 import { API_URL_DATA } from "./lib/apilist";
 import { Suspense } from "react";
 
@@ -70,7 +72,6 @@ export default async function Home() {
             title={topStoriesTitle}
             slug={topStoriesSlug}
           />
-          
         )}
       </Suspense>
 
@@ -110,7 +111,8 @@ export async function generateMetadata() {
 
     return {
       title: topStory?.title || "Lokmat TV - Latest News & Videos",
-      description: "Latest top stories and video content powered by Dailymotion.",
+      description:
+        "Latest top stories and video content powered by Dailymotion.",
       openGraph: {
         title: topStory?.title || "Lokmat TV - Latest News & Videos",
         description: "Discover trending stories and video playlists.",
@@ -118,7 +120,9 @@ export async function generateMetadata() {
         siteName: "LokmatTV",
         images: [
           {
-            url: topStory?.thumbnail_240_url || "https://yourdomain.com/og-image.jpg",
+            url:
+              topStory?.thumbnail_240_url ||
+              "https://yourdomain.com/og-image.jpg",
             width: 1200,
             height: 630,
           },
@@ -130,7 +134,10 @@ export async function generateMetadata() {
         card: "summary_large_image",
         title: topStory?.title || "Lokmat TV - Latest News & Videos",
         description: "Watch trending news stories and playlists.",
-        images: [topStory?.thumbnail_240_url || "https://yourdomain.com/twitter-image.jpg"],
+        images: [
+          topStory?.thumbnail_240_url ||
+            "https://yourdomain.com/twitter-image.jpg",
+        ],
       },
     };
   } catch (error) {

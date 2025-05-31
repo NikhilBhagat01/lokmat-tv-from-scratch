@@ -1,43 +1,17 @@
-// import NewsLayout from "@/app/components/NewsLayout";
-// import React from "react";
+export const dynamic = "auto"; // ISR + cached fetch every 3 minutes
 
 import NewsLayout from "@/app/components/NewsLayout";
 import VideoCarousel from "@/app/components/VideoCarousel";
 import { fetchCategoryDataBySlug } from "@/app/lib/FetchData";
-
-// import { API_URL_DATA, CATEGORY_DATA, CITY_DATA } from "@/app/lib/apilist";
-
-// const page = async({ params }) => {
-//   const { slug } = await params;
-//   console.log(slug);
-
-//   const category = CATEGORY_DATA.find(item => item.slug === slug);
-//   const city = CITY_DATA.find(item => item.slug === slug);
-//   console.log(category, city)
-
-//   const playlist = category.playlist.split(',');
-
-//   // const category = CATEGORY_DATA.find(item => item.slug === slug);
-//   // const city = CITY_DATA.find(item => item.slug === slug);
-//   // console.log(category, city)
-//   return
-
-//   return (
-//     <div>
-//       <NewsLayout />
-//     </div>
-//   );
-// };
-
-// export default page;
+import { redirect } from "next/navigation";
 
 const page = async ({ params }) => {
   const { slug } = await params;
   // const data = await fetchCategoryData(slug);
   const data = await fetchCategoryDataBySlug(slug);
-  console.log("data", data);
+  // console.log("data", data);
 
-  if (!data) return <h1>No Data</h1>;
+  if (!data) return redirect("/");
 
   const firstPlaylist = data?.playlists[0] || [];
   const topStories = firstPlaylist?.videos || [];
@@ -80,12 +54,6 @@ const page = async ({ params }) => {
           data={item.videos}
         />
       ))}
-
-      {/* <VideoCarousel
-                title={item.title}
-                slug={item.title_slug}
-                data={item?.data?.list || []}
-              /> */}
     </>
   );
 };

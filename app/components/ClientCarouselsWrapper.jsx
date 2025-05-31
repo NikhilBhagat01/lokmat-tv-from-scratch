@@ -8,7 +8,7 @@ import VideoCarousel from "./VideoCarousel";
 const ClientCarouselsWrapper = ({ carousels }) => {
   const [fetchedData, setFetchedData] = useState([]);
 
-  console.log('in client carousels wrapper')
+  // console.log('in client carousels wrapper')
   useEffect(() => {
     const fetchAll = async () => {
       const results = await Promise.all(
