@@ -26,19 +26,19 @@ const ClientCarouselsWrapper = ({ carousels }) => {
             const res = await fetch(url);
             const data = await res.json();
 
-            return { 
-              ...item, 
-              isFeaturedChannel, 
+            return {
+              ...item,
+              isFeaturedChannel,
               data,
-              id
+              id,
             };
           } catch (err) {
             console.error("Error fetching:", item.url, err);
-            return { 
-              ...item, 
-              data: null, 
+            return {
+              ...item,
+              data: null,
               error: true,
-              id
+              id,
             };
           }
         })
@@ -54,7 +54,7 @@ const ClientCarouselsWrapper = ({ carousels }) => {
     return <div className="text-white px-3">Loading carousels...</div>;
   }
 
-  console.log(fetchedData)
+  // console.log(fetchedData)
   return (
     <>
       {fetchedData.map((item, index) => {

@@ -1,4 +1,4 @@
-export const dynamic = "force-static";
+export const dynamic = "auto";
 export const revalidate = 180; // Revalidate the page itself every 180 seconds (3 minutes)
 
 import ExpandPlaylist from "@/app/components/ExpandPlaylist";

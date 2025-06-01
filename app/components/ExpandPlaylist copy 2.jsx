@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
 
@@ -24,14 +24,14 @@ const ExpandPlaylist = ({ videoId }) => {
         }
       );
       const data = await response.json();
-      
+
       if (pageNum === 1) {
         setVideos(data.list);
         setSelectedVideo(data.list[0]);
       } else {
-        setVideos(prev => [...prev, ...data.list]);
+        setVideos((prev) => [...prev, ...data.list]);
       }
-      
+
       setHasMore(data.has_more);
       setLoading(false);
     } catch (error) {
@@ -58,30 +58,36 @@ const ExpandPlaylist = ({ videoId }) => {
   }, [selectedVideo]);
 
   // Intersection Observer for infinite scroll
-  const lastVideoRef = useCallback(node => {
-    if (loading || !hasMore) return;
-    
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
+  const lastVideoRef = useCallback(
+    (node) => {
+      if (loading || !hasMore) return;
 
-    observerRef.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
-        console.log('Loading next page:', page + 1); // Debug log
-        const nextPage = page + 1;
-        setPage(nextPage);
-        fetchVideos(nextPage);
+      if (observerRef.current) {
+        observerRef.current.disconnect();
       }
-    }, {
-      root: null,
-      rootMargin: '100px', // Load earlier, before reaching the very bottom
-      threshold: 0.1 // Trigger when even 10% of the element is visible
-    });
 
-    if (node) {
-      observerRef.current.observe(node);
-    }
-  }, [loading, hasMore, page, videoId]);
+      observerRef.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && hasMore) {
+            // console.log('Loading next page:', page + 1); // Debug log
+            const nextPage = page + 1;
+            setPage(nextPage);
+            fetchVideos(nextPage);
+          }
+        },
+        {
+          root: null,
+          rootMargin: "100px", // Load earlier, before reaching the very bottom
+          threshold: 0.1, // Trigger when even 10% of the element is visible
+        }
+      );
+
+      if (node) {
+        observerRef.current.observe(node);
+      }
+    },
+    [loading, hasMore, page, videoId]
+  );
 
   if (!selectedVideo) return null;
 
@@ -123,11 +129,7 @@ const ExpandPlaylist = ({ videoId }) => {
             className="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-300 font-semibold flex items-center gap-2"
             onClick={() => setShowVideo(true)}
           >
-            <svg
-              className="w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M6 4l10 6-10 6V4z" />
             </svg>
             Play Now
@@ -151,7 +153,7 @@ const ExpandPlaylist = ({ videoId }) => {
               key={video.id}
               ref={isLastVideo ? lastVideoRef : null}
               className={`cursor-pointer group bg-neutral-900 rounded-lg p-2 ${
-                selectedVideo.id === video.id ? 'ring-2 ring-yellow-400' : ''
+                selectedVideo.id === video.id ? "ring-2 ring-yellow-400" : ""
               }`}
               onClick={() => {
                 setSelectedVideo(video);
@@ -165,11 +167,14 @@ const ExpandPlaylist = ({ videoId }) => {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute top-1 right-1 bg-black/80 px-1.5 py-0.5 text-xs text-white rounded">
-                  {Math.floor(video.duration / 60)}:{(video.duration % 60).toString().padStart(2, '0')}
+                  {Math.floor(video.duration / 60)}:
+                  {(video.duration % 60).toString().padStart(2, "0")}
                 </div>
               </div>
               <div className="mt-2 px-1">
-                <div className="text-yellow-300 text-xs mb-1">{formattedDate}</div>
+                <div className="text-yellow-300 text-xs mb-1">
+                  {formattedDate}
+                </div>
                 <h3 className="text-[15px] text-yellow-400 font-medium leading-snug line-clamp-3 group-hover:text-yellow-300">
                   {video.title}
                 </h3>
