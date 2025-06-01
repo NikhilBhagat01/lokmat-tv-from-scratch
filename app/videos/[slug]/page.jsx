@@ -1,4 +1,4 @@
-export const dynamic = "auto"; // ISR + cached fetch every 3 minutes
+export const dynamic = "force-static";
 export const revalidate = 180; // Revalidate the page itself every 180 seconds (3 minutes)
 
 import ExpandPlaylist from "@/app/components/ExpandPlaylist";
@@ -8,15 +8,14 @@ import { fetchCategoryDataBySlug } from "@/app/lib/FetchData";
 import { redirect } from "next/navigation";
 
 const page = async ({ params, searchParams }) => {
-  
   const { slug } = await params;
-  const {expand, videoId} = await searchParams;
+  const { expand, videoId } = await searchParams;
   // console.log(await params)
   // console.log(expand)
   // console.log(videoId)
 
-  if(expand && videoId){
-    return <ExpandPlaylist videoId={videoId} />
+  if (expand && videoId) {
+    return <ExpandPlaylist videoId={videoId} />;
   }
   // const data = await fetchCategoryData(slug);
   const data = await fetchCategoryDataBySlug(slug);

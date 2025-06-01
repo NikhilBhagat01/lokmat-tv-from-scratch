@@ -1,4 +1,4 @@
-export const dynamic = "auto"; // ISR + cached fetch every 3 minute
+export const dynamic = "force-static";
 export const revalidate = 180; // Revalidate the page itself every 180 seconds (3 minutes)
 
 import Featuredchannel from "./components/Featuredchannel";
@@ -84,7 +84,7 @@ export default async function Home() {
       <div className="pl-3 pb-3 text-yellow-400">
         {/* SSR part */}
         {ssrCarousels.map((item, index) => (
-          <Suspense Suspense key={index} fallback={< CarouselSkeleton />}>
+          <Suspense Suspense key={index} fallback={<CarouselSkeleton />}>
             {item?.error ? (
               <ErrorSection title={item.title} error={item.error} />
             ) : item?.isFeaturedChannel ? (
@@ -106,7 +106,7 @@ export default async function Home() {
         <Suspense fallback={<CarouselSkeleton />}>
           <ClientCarouselsWrapper carousels={csrCarousels} />
         </Suspense>
-      </div >
+      </div>
     </>
   );
 }
@@ -143,7 +143,7 @@ export async function generateMetadata() {
         description: "Watch trending news stories and playlists.",
         images: [
           topStory?.thumbnail_240_url ||
-          "https://yourdomain.com/twitter-image.jpg",
+            "https://yourdomain.com/twitter-image.jpg",
         ],
       },
     };
