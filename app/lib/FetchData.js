@@ -1,115 +1,165 @@
 // app/lib/fetchAllDailymotionData.ts
 
+import { Redis } from '@upstash/redis';
 import { API_URL_DATA, CATEGORY_DATA } from "./apilist";
+
+// Initialize Redis client
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN,
+});
 
 const VIDEO_FIELDS =
   "id,thumbnail_240_url,url,title,description,created_time,duration,owner.screenname,owner.username,channel,onair";
 
-async function fetchAllDailymotionData() {
-  const fetches = API_URL_DATA.slice(0, 3).map(async (item) => {
-    // console.log(item)
-    const isPlaylist = item.isPlaylist;
-    const isFeaturedChannel = item.title_slug === "featured-channels";
-    const title = item.title;
-    const id = item.playlist_id;
+// Helper function to generate cache key
+const generateCacheKey = (type, id, page = 1) => {
+  return `lokmat:${type}:${id}:page${page}`;
+};
 
-    let url = isPlaylist
-      ? `https://api.dailymotion.com/playlists/?fields=name,id,thumbnail_240_url,videos_total&ids=${item.playlist_id}`
-      : `https://api.dailymotion.com/playlist/${item.playlist_id}/videos?fields=${VIDEO_FIELDS}&limit=7&page=1`;
-
-    try {
-      const res = await fetch(url, {
-        headers: {
-          "User-Agent": "Mozilla/5.0 Chrome/90.0 Safari/537.36",
-        },
-        next: { revalidate: 180 },
-      });
-      const data = await res.json();
-
-      // console.log(data)
-
-      return {
-        title,
-        title_slug: item.title_slug,
-        isPlaylist,
-        isFeaturedChannel,
-        data,
-        id,
-      };
-    } catch (err) {
-      console.error(`Error fetching ${title}:`, err);
-      return {
-        title,
-        title_slug: item.title_slug,
-        isPlaylist,
-        isFeaturedChannel,
-        data: null,
-      };
+// Helper function to fetch data with caching
+async function fetchWithCache(url, cacheKey, ttl = 180) { // TTL in seconds
+  try {
+    // Try to get data from cache first
+    const cachedData = await redis.get(cacheKey);
+    if (cachedData) {
+      console.log('Cache hit for:', cacheKey);
+      return cachedData;
     }
-  });
 
-  return Promise.all(fetches);
+    // If not in cache, fetch from API
+    const res = await fetch(url, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 Chrome/90.0 Safari/537.36",
+      },
+      next: { revalidate: ttl },
+    });
+
+    const data = await res.json();
+
+    // Store in cache
+    await redis.set(cacheKey, data, { ex: ttl });
+    console.log('Cached data for:', cacheKey);
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching/caching data:', error);
+    throw error;
+  }
+}
+
+async function fetchAllDailymotionData() {
+  try {
+    const fetches = API_URL_DATA.slice(0, 3).map(async (item) => {
+      // console.log(item)
+      const isPlaylist = item.isPlaylist;
+      const isFeaturedChannel = item.title_slug === "featured-channels";
+      const title = item.title;
+      const id = item.playlist_id;
+
+      let url = isPlaylist
+        ? `https://api.dailymotion.com/playlists/?fields=name,id,thumbnail_240_url,videos_total&ids=${item.playlist_id}`
+        : `https://api.dailymotion.com/playlist/${item.playlist_id}/videos?fields=${VIDEO_FIELDS}&limit=7&page=1`;
+
+      const cacheKey = generateCacheKey(
+        isPlaylist ? 'playlist' : 'videos',
+        id
+      );
+
+      try {
+        const data = await fetchWithCache(url, cacheKey);
+        return {
+          title,
+          title_slug: item.title_slug,
+          isPlaylist,
+          isFeaturedChannel,
+          data,
+          id,
+        };
+      } catch (err) {
+        console.error(`Error fetching ${title}:`, err);
+        return {
+          title,
+          title_slug: item.title_slug,
+          isPlaylist,
+          isFeaturedChannel,
+          data: null,
+          id,
+        };
+      }
+    });
+
+    return Promise.all(fetches);
+  } catch (error) {
+    console.error('Error in fetchAllDailymotionData:', error);
+    throw error;
+  }
 }
 
 async function fetchCategoryDataBySlug(slug) {
-  // Find the category that matches the slug
-  const category = CATEGORY_DATA.find((item) => item.slug === slug);
+  try {
+    // Find the category that matches the slug
+    const category = CATEGORY_DATA.find((item) => item.slug === slug);
 
-  if (!category) {
-    console.error(`No category found for slug: ${slug}`);
-    return null;
-  }
-
-  const playlist = category.playlist.split(",");
-
-  const playlistFetches = playlist.map(async (playlistId) => {
-    const nameUrl = `https://api.dailymotion.com/playlist/${playlistId}/?fields=name`;
-    const videosUrl = `https://api.dailymotion.com/playlist/${playlistId}/videos?fields=${VIDEO_FIELDS}&limit=7&page=1`;
-
-    try {
-      const [nameRes, videosRes] = await Promise.all([
-        fetch(nameUrl, {
-          headers: {
-            "User-Agent": "Mozilla/5.0 Chrome/90.0 Safari/537.36",
-          },
-          next: { revalidate: 180 },
-        }),
-        fetch(videosUrl, {
-          headers: {
-            "User-Agent": "Mozilla/5.0 Chrome/90.0 Safari/537.36",
-          },
-          next: { revalidate: 180 }, // ✅ Revalidate every 3 min
-        }),
-      ]);
-
-      const [nameData, videosData] = await Promise.all([
-        nameRes.json(),
-        videosRes.json(),
-      ]);
-
-      const playlist_slug = nameData.name.replace(/\s+/g, "-").toLowerCase();
-
-      return {
-        playlistName: nameData.name,
-        videos: videosData.list || [],
-        slug: playlist_slug,
-        id: playlistId, // Remove any null results
-        // Ensure we return empty array if no videos
-      };
-    } catch (err) {
-      console.error(`Error fetching playlist ${playlistId}:`, err);
+    if (!category) {
+      console.error(`No category found for slug: ${slug}`);
       return null;
     }
-  });
 
-  const results = await Promise.all(playlistFetches);
+    const playlist = category.playlist.split(",");
+    const cacheKey = generateCacheKey('category', slug);
 
-  return {
-    categoryName: category.name,
-    slug: category.slug,
-    // slug: playlist_slug,
-    playlists: results.filter(Boolean),
-  };
+    // Check cache first
+    const cachedCategory = await redis.get(cacheKey);
+    if (cachedCategory) {
+      console.log('Cache hit for category:', slug);
+      return cachedCategory;
+    }
+
+    const playlistFetches = playlist.map(async (playlistId) => {
+      const nameUrl = `https://api.dailymotion.com/playlist/${playlistId}/?fields=name`;
+      const videosUrl = `https://api.dailymotion.com/playlist/${playlistId}/videos?fields=${VIDEO_FIELDS}&limit=7&page=1`;
+
+      try {
+        const [nameData, videosData] = await Promise.all([
+          fetchWithCache(
+            nameUrl,
+            generateCacheKey('playlist-name', playlistId)
+          ),
+          fetchWithCache(
+            videosUrl,
+            generateCacheKey('playlist-videos', playlistId)
+          ),
+        ]);
+
+        const playlist_slug = nameData.name.replace(/\s+/g, "-").toLowerCase();
+
+        return {
+          playlistName: nameData.name,
+          videos: videosData.list || [],
+          slug: playlist_slug,
+          id: playlistId,
+        };
+      } catch (err) {
+        console.error(`Error fetching playlist ${playlistId}:`, err);
+        return null;
+      }
+    });
+
+    const results = await Promise.all(playlistFetches);
+    const categoryData = {
+      categoryName: category.name,
+      slug: category.slug,
+      playlists: results.filter(Boolean),
+    };
+
+    // Cache the entire category data
+    await redis.set(cacheKey, categoryData, { ex: 180 }); // Cache for 3 minutes
+    return categoryData;
+  } catch (error) {
+    console.error('Error in fetchCategoryDataBySlug:', error);
+    throw error;
+  }
 }
 
 // async function fetchCategoryData(slug) {
@@ -170,7 +220,21 @@ async function fetchCategoryDataBySlug(slug) {
 //   // return results;
 // }
 
-export { fetchAllDailymotionData, fetchCategoryDataBySlug };
+// Function to clear cache (useful for admin purposes or force refresh)
+async function clearCache(type, id) {
+  try {
+    const pattern = id ? generateCacheKey(type, id, '*') : `lokmat:${type}:*`;
+    const keys = await redis.keys(pattern);
+    if (keys.length > 0) {
+      await redis.del(keys);
+      console.log(`Cleared ${keys.length} cache entries for ${type}`);
+    }
+  } catch (error) {
+    console.error('Error clearing cache:', error);
+  }
+}
+
+export { fetchAllDailymotionData, fetchCategoryDataBySlug, clearCache };
 
 // // app/lib/fetchAllDailymotionData.ts
 
