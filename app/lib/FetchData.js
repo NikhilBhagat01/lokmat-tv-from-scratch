@@ -12,18 +12,32 @@ const redis = new Redis({
 const VIDEO_FIELDS =
   "id,thumbnail_240_url,url,title,description,created_time,duration,owner.screenname,owner.username,channel,onair";
 
+const CACHE_DURATION = {
+  development: 180, // 3 minutes in development
+  production: {
+    default: 300,    // 5 minutes
+    playlists: 600,  // 10 minutes
+    categories: 900  // 15 minutes
+  }
+};
+
 // Helper function to generate cache key
 const generateCacheKey = (type, id, page = 1) => {
   return `lokmat:${type}:${id}:page${page}`;
 };
 
 // Helper function to fetch data with caching
-async function fetchWithCache(url, cacheKey, ttl = 180) { // TTL in seconds
+async function fetchWithCache(url, cacheKey, type = 'default') {
   try {
+    // Get environment-specific cache duration
+    const ttl = process.env.VERCEL_ENV === 'production'
+      ? CACHE_DURATION.production[type] || CACHE_DURATION.production.default
+      : CACHE_DURATION.development;
+
     // Try to get data from cache first
     const cachedData = await redis.get(cacheKey);
     if (cachedData) {
-      console.log('Cache hit for:', cacheKey);
+      console.log('Cache hit for:', cacheKey, 'in', process.env.VERCEL_ENV || 'development');
       return cachedData;
     }
 
@@ -37,9 +51,9 @@ async function fetchWithCache(url, cacheKey, ttl = 180) { // TTL in seconds
 
     const data = await res.json();
 
-    // Store in cache
+    // Store in cache with environment-specific TTL
     await redis.set(cacheKey, data, { ex: ttl });
-    console.log('Cached data for:', cacheKey);
+    console.log('Cached data for:', cacheKey, 'TTL:', ttl, 'seconds');
 
     return data;
   } catch (error) {
