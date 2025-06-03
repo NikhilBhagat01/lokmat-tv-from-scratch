@@ -74,20 +74,19 @@ const HoverPreviewCard = ({ video }) => {
           />
         ) : (
           <div className="absolute inset-0">
-            <LazyImage
-              src={video.thumbnail_240_url}
-              alt={video.title}
-              fill
-              sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 20vw"
-              className="object-cover transition-transform duration-300"
-            />
-            <div className={`absolute inset-0 bg-black bg-opacity-60 transition-opacity duration-300 ${
-              hovered ? "opacity-100" : "opacity-0"
-            }`} />
-            <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 ${
-              hovered ? "opacity-100" : "opacity-0"
-            }`}>
-              <div className="w-8 h-8 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin" />
+            <div className="relative w-full h-full">
+              <LazyImage
+                src={video.thumbnail_240_url}
+                alt={video.title}
+                fill
+                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 20vw"
+                className={`object-cover transition-all duration-300 ${
+                  hovered ? 'scale-105' : 'scale-100'
+                }`}
+              />
+              <div className={`absolute inset-0 transition-all duration-300 ${
+                hovered ? "bg-neutral-800/90 animate-pulse" : "bg-black/0"
+              }`} />
             </div>
             <div className="absolute top-1 right-1 bg-black bg-opacity-75 text-white text-xs px-1 py-0.5 rounded z-10">
               {formattedDuration}
