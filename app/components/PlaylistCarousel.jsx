@@ -4,6 +4,7 @@ import { useState } from "react";
 import Slider from "react-slick";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
 import HeadingText from "./HeadingText";
+import LazyImage from './LazyImage';
 
 // Simple Dailymotion Card Component
 const DailymotionCard = ({ videoId, title, videoCount, thumbnailUrl }) => {
@@ -13,10 +14,13 @@ const DailymotionCard = ({ videoId, title, videoCount, thumbnailUrl }) => {
       <div className="relative overflow-hidden   rounded-lg ">
         {/* Thumbnail */}
         <div className="relative">
-          <img
+          <LazyImage
             src={thumbnailUrl}
             alt={title}
+            width={320}
+            height={160}
             className="w-full h-40 object-fill"
+            sizes="(max-width: 768px) 80vw, 20vw"
           />
         </div>
 

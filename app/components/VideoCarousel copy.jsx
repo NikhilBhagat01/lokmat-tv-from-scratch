@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import HeadingText from "./HeadingText";
-import LazyImage from './LazyImage';
 
 // Dynamically import react-slick (client-only)
 const Slider = dynamic(() => import("react-slick"), { ssr: false });
@@ -29,6 +28,7 @@ const CustomPrevArrow = ({ onClick }) => (
 );
 
 const HoverPreviewCard = ({ video }) => {
+  // console.log(video);
   const [showIframe, setShowIframe] = useState(false);
   const [timer, setTimer] = useState(null);
   const [hovered, setHovered] = useState(false);
@@ -64,7 +64,7 @@ const HoverPreviewCard = ({ video }) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="group relative w-full h-0 pt-[56.25%] overflow-hidden rounded shadow-md">
+      <div className="group relative w-full pt-[56.25%] overflow-hidden rounded shadow-md">
         {showIframe ? (
           <iframe
             src={`https://www.dailymotion.com/widget/preview/video/${video.id}?title=none&duration=none&mode=video&trigger=auto`}
@@ -73,26 +73,33 @@ const HoverPreviewCard = ({ video }) => {
             className="absolute inset-0 w-full h-full"
           />
         ) : (
-          <div className="absolute inset-0">
-            <LazyImage
-              src={video.thumbnail_240_url}
-              alt={video.title}
-              fill
-              sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 20vw"
-              className="object-cover transition-transform duration-300"
+          <Image
+            src={video.thumbnail_240_url}
+            alt={video.title}
+            fill
+            sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 20vw"
+            className="object-cover transition-transform duration-300"
+          />
+        )}
+
+        {!showIframe && (
+          <>
+            <div
+              className={`absolute inset-0 bg-black bg-opacity-60 transition-opacity duration-300 ${
+                hovered ? "opacity-100" : "opacity-0"
+              }`}
             />
-            <div className={`absolute inset-0 bg-black bg-opacity-60 transition-opacity duration-300 ${
-              hovered ? "opacity-100" : "opacity-0"
-            }`} />
-            <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 ${
-              hovered ? "opacity-100" : "opacity-0"
-            }`}>
+            <div
+              className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 ${
+                hovered ? "opacity-100" : "opacity-0"
+              }`}
+            >
               <div className="w-8 h-8 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin" />
             </div>
             <div className="absolute top-1 right-1 bg-black bg-opacity-75 text-white text-xs px-1 py-0.5 rounded z-10">
               {formattedDuration}
             </div>
-          </div>
+          </>
         )}
       </div>
 
