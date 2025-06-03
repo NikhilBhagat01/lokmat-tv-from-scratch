@@ -4,7 +4,7 @@ import React from "react";
 
 const HeadingText = ({ name, link, id }) => {
   // console.log(link);
-  const href = id ? `/videos/${link}?expand=true&videoId=${id}` : `/videos/${link}`;
+  const href = id ? `/videos/${link}/${id}` : `/videos/${link}`;
   return (
     <div className="flex items-center gap-4 px-3">
       <h3 className="text-[23px] font-semibold">{name}</h3>
