@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* :root {
   --background: #ffffff;
@@ -32,7 +32,6 @@
   /* color: #ffbf1e; */
 }
 
-
 /* .iconmenu {
   background-position: -30px -30px;
   display: block;
@@ -43,7 +42,6 @@
 .spriticon {
   background: url(https://d3pc1xvrcw35tl.cloudfront.net/assets/images/dm-video-tiles//sprite-image-v0.0.png) no-repeat;
 } */
-
 
 .text-brand-yellow {
   color: #ffbf1e;
@@ -58,7 +56,6 @@ li {
   list-style: none;
   display: block;
 }
-
 
 /* Optional: if not using Tailwind directly for arrows */
 .slick-prev,
@@ -112,10 +109,7 @@ li {
 }
 
 .animate-pulse {
-  background: linear-gradient(90deg,
-      #1a1a1a 25%,
-      #2a2a2a 50%,
-      #1a1a1a 75%);
+  background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }

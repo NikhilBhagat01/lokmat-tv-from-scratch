@@ -1,26 +1,28 @@
-"use client";
+'use client';
 
 import Image from 'next/image';
 import { useState } from 'react';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 
-const LazyImage = ({ src, alt, className = "", fill = false, width, height, sizes = "", priority = false }) => {
+const LazyImage = ({ src, alt, className = '', fill = false, width, height, sizes = '', priority = false }) => {
   const [isLoading, setIsLoading] = useState(true);
   const { targetRef, hasIntersected } = useIntersectionObserver({
     rootMargin: '50px',
-    threshold: 0
+    threshold: 0,
   });
 
-  const containerStyle = fill ? {
-    position: 'absolute',
-    inset: 0,
-    height: '100%',
-    width: '100%'
-  } : {
-    width: width,
-    height: height,
-    position: 'relative'
-  };
+  const containerStyle = fill
+    ? {
+        position: 'absolute',
+        inset: 0,
+        height: '100%',
+        width: '100%',
+      }
+    : {
+        width: width,
+        height: height,
+        position: 'relative',
+      };
 
   return (
     <div ref={targetRef} className={`${fill ? 'absolute inset-0' : 'relative'}`} style={containerStyle}>
@@ -45,27 +47,27 @@ const LazyImage = ({ src, alt, className = "", fill = false, width, height, size
             loading={priority ? 'eager' : 'lazy'}
           />
           {isLoading && (
-            <div 
+            <div
               className={`absolute inset-0 animate-pulse bg-neutral-800/90 ${className}`}
               style={{
                 position: fill ? 'absolute' : 'relative',
                 inset: fill ? 0 : undefined,
                 width: fill ? '100%' : width,
                 height: fill ? '100%' : height,
-                aspectRatio: !fill && width && height ? width / height : undefined
+                aspectRatio: !fill && width && height ? width / height : undefined,
               }}
             />
           )}
         </>
       ) : (
-        <div 
-          className={`bg-neutral-800/90 animate-pulse ${className}`} 
+        <div
+          className={`bg-neutral-800/90 animate-pulse ${className}`}
           style={{
             position: fill ? 'absolute' : 'relative',
             inset: fill ? 0 : undefined,
             width: fill ? '100%' : width,
             height: fill ? '100%' : height,
-            aspectRatio: !fill && width && height ? width / height : undefined
+            aspectRatio: !fill && width && height ? width / height : undefined,
           }}
         />
       )}
@@ -73,4 +75,4 @@ const LazyImage = ({ src, alt, className = "", fill = false, width, height, size
   );
 };
 
-export default LazyImage; 
+export default LazyImage;

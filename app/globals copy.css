@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* :root {
   --background: #ffffff;
@@ -32,7 +32,6 @@
   /* color: #ffbf1e; */
 }
 
-
 /* .iconmenu {
   background-position: -30px -30px;
   display: block;
@@ -43,7 +42,6 @@
 .spriticon {
   background: url(https://d3pc1xvrcw35tl.cloudfront.net/assets/images/dm-video-tiles//sprite-image-v0.0.png) no-repeat;
 } */
-
 
 .text-brand-yellow {
   color: #ffbf1e;

@@ -1,4 +1,3 @@
-
 export const API_URL_DATA = [
   { id: 1, title: 'Top Stories Today', title_slug: 'top-stories-today', playlist_id: 'x7h89j', isPlaylist: false },
   { id: 2, title: 'Trending Videos', title_slug: 'trending-videos', playlist_id: 'x7h89k', isPlaylist: false },
@@ -15,7 +14,7 @@ export const API_URL_DATA = [
   { id: 13, title: 'Sope Upay', title_slug: 'sope-upay', playlist_id: 'x7h74r', isPlaylist: false },
   { id: 14, title: 'Events & Festival', title_slug: 'events-and-festival', playlist_id: 'x7h751', isPlaylist: false },
   // { id: 15, title: 'Events & Festival', title_slug: 'lokmat-events', playlist_id: 'x7h752,x7h757,x7h75k,x7h75v,x7h75y,x7h760', isPlaylist: true },
-  { id: 16, title: 'Bhakti', title_slug: 'bhakti', playlist_id: "x7h74r,x7h751,x7h752,x7h757,x7h757,x7h75k,x7h75v,x7h75y,x7h760", isPlaylist: true },
+  { id: 16, title: 'Bhakti', title_slug: 'bhakti', playlist_id: 'x7h74r,x7h751,x7h752,x7h757,x7h757,x7h75k,x7h75v,x7h75y,x7h760', isPlaylist: true },
   { id: 17, title: 'Shopping', title_slug: 'shopping', playlist_id: 'x7h76j', isPlaylist: false },
   { id: 18, title: 'Home Remedies', title_slug: 'home-remedies', playlist_id: 'x7h76l', isPlaylist: false },
   { id: 19, title: 'Sakhi', title_slug: 'sakhi', playlist_id: 'x7h766,x7h76p,x7h78s,x7h7t5,x7h7t9,x7h7tf,x7h7tj', isPlaylist: true },
@@ -24,101 +23,93 @@ export const API_URL_DATA = [
   { id: 22, title: 'Latest Viral Videos', title_slug: 'latest-viral-videos', playlist_id: 'x7h75u', isPlaylist: false },
 ];
 
-
-
 export const CATEGORY_DATA = [
   {
-    "name": "News",
-    "slug": "news",
-    "playlist": "x85uxc,x86asm,x860li,x86asy,x86at6,x7h6t7,x7h6tg,x7h6to,x7h6u0,x7h6u5,x7h6zp"
+    name: 'News',
+    slug: 'news',
+    playlist: 'x85uxc,x86asm,x860li,x86asy,x86at6,x7h6t7,x7h6tg,x7h6to,x7h6u0,x7h6u5,x7h6zp',
   },
   {
-    "name": "City News",
-    "slug": "city-news",
-    "playlist": "x7h72r,x7h731,x7h73p,x7h73v,x7h73x,x7h73y,x7h74c,x7h74l,x7h74t"
+    name: 'City News',
+    slug: 'city-news',
+    playlist: 'x7h72r,x7h731,x7h73p,x7h73v,x7h73x,x7h73y,x7h74c,x7h74l,x7h74t',
   },
   {
-    "name": "Entertainment",
-    "slug": "entertainment",
-    "playlist": "x7h761,x7h765,x7h767,x7h76b,x7h7to,x7h7us,x7h7uy,x7h7v1,x7h7v4"
+    name: 'Entertainment',
+    slug: 'entertainment',
+    playlist: 'x7h761,x7h765,x7h767,x7h76b,x7h7to,x7h7us,x7h7uy,x7h7v1,x7h7v4',
   },
   {
-    "name": "Social Viral",
-    "slug": "social-viral",
-    "playlist": "x7h75u,x7h75w"
+    name: 'Social Viral',
+    slug: 'social-viral',
+    playlist: 'x7h75u,x7h75w',
   },
   {
-    "name": "Sakhi",
-    "slug": "sakhi",
-    "playlist": "x7h8av,x7h766,x7h76j,x7h76l,x7h76p,x7h78s,x7h7t5,x7h7t9,x7h7tf,x7h7tj"
+    name: 'Sakhi',
+    slug: 'sakhi',
+    playlist: 'x7h8av,x7h766,x7h76j,x7h76l,x7h76p,x7h78s,x7h7t5,x7h7t9,x7h7tf,x7h7tj',
   },
   {
-    "name": "Bhakti",
-    "slug": "bhakti",
-    "playlist": "x7h74r,x7h751,x7h752,x7h757,x7h757,x7h75k,x7h75v,x7h75y,x7h760"
+    name: 'Bhakti',
+    slug: 'bhakti',
+    playlist: 'x7h74r,x7h751,x7h752,x7h757,x7h757,x7h75k,x7h75v,x7h75y,x7h760',
   },
   {
-    "name": "Events",
-    "slug": "events",
-    "playlist": "x7h774,x7h776,x7h777,x7h77b"
+    name: 'Events',
+    slug: 'events',
+    playlist: 'x7h774,x7h776,x7h777,x7h77b',
   },
   {
-    "name": "Inspirational",
-    "slug": "inspirational",
-    "playlist": "x7h750,x7h75a"
-  }
+    name: 'Inspirational',
+    slug: 'inspirational',
+    playlist: 'x7h750,x7h75a',
+  },
 ];
-
-
 
 export const CITY_DATA = [
   {
-    "name": "Hello Pune",
-    "slug": "hello-pune",
-    "playlist": "x7h72r"
+    name: 'Hello Pune',
+    slug: 'hello-pune',
+    playlist: 'x7h72r',
   },
   {
-    "name": "Hello Mumbai",
-    "slug": "hello-mumbai",
-    "playlist": "x7h731"
+    name: 'Hello Mumbai',
+    slug: 'hello-mumbai',
+    playlist: 'x7h731',
   },
   {
-    "name": "Hello Thane",
-    "slug": "hello-thane",
-    "playlist": "x7h73p"
+    name: 'Hello Thane',
+    slug: 'hello-thane',
+    playlist: 'x7h73p',
   },
   {
-    "name": "Hello Kalyan Dombivili",
-    "slug": "hello-kalyan-dombivili",
-    "playlist": "x7h73v"
+    name: 'Hello Kalyan Dombivili',
+    slug: 'hello-kalyan-dombivili',
+    playlist: 'x7h73v',
   },
   {
-    "name": "Hello Nagpur",
-    "slug": "hello-nagpur",
-    "playlist": "x7h73x"
+    name: 'Hello Nagpur',
+    slug: 'hello-nagpur',
+    playlist: 'x7h73x',
   },
   {
-    "name": "Hello Chhatrapati Sambhajinagar",
-    "slug": "hello-chhatrapati-sambhajinagar",
-    "playlist": "x7h73y"
+    name: 'Hello Chhatrapati Sambhajinagar',
+    slug: 'hello-chhatrapati-sambhajinagar',
+    playlist: 'x7h73y',
   },
   {
-    "name": "Hello Nashik",
-    "slug": "hello-nashik",
-    "playlist": "x7h74c"
+    name: 'Hello Nashik',
+    slug: 'hello-nashik',
+    playlist: 'x7h74c',
   },
   {
-    "name": "Hello Kolhapur",
-    "slug": "hello-kolhapur",
-    "playlist": "x7h74l"
+    name: 'Hello Kolhapur',
+    slug: 'hello-kolhapur',
+    playlist: 'x7h74l',
   },
   {
-    "name": "Hello Jalgaon",
-    "slug": "hello-jalgaon",
-    "playlist": "x7h74t"
-  }
+    name: 'Hello Jalgaon',
+    slug: 'hello-jalgaon',
+    playlist: 'x7h74t',
+  },
 ];
-
-
-
-

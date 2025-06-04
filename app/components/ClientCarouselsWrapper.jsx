@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import Featuredchannel from "./Featuredchannel";
-import PlaylistCarousel from "./PlaylistCarousel";
-import VideoCarousel from "./VideoCarousel";
+import React, { useEffect, useState } from 'react';
+import Featuredchannel from './Featuredchannel';
+import PlaylistCarousel from './PlaylistCarousel';
+import VideoCarousel from './VideoCarousel';
 
 const ClientCarouselsWrapper = ({ carousels }) => {
   const [fetchedData, setFetchedData] = useState([]);
@@ -12,10 +12,10 @@ const ClientCarouselsWrapper = ({ carousels }) => {
   useEffect(() => {
     const fetchAll = async () => {
       const results = await Promise.all(
-        carousels.map(async (item) => {
-          const isFeaturedChannel = item.title_slug === "featured-channels";
+        carousels.map(async item => {
+          const isFeaturedChannel = item.title_slug === 'featured-channels';
           const id = item.playlist_id;
-          let url = "";
+          let url = '';
           if (item.isPlaylist) {
             url = `https://api.dailymotion.com/playlists/?fields=name,id,thumbnail_240_url,videos_total&ids=${item.playlist_id}`;
           } else {
@@ -33,7 +33,7 @@ const ClientCarouselsWrapper = ({ carousels }) => {
               id,
             };
           } catch (err) {
-            console.error("Error fetching:", item.url, err);
+            console.error('Error fetching:', item.url, err);
             return {
               ...item,
               data: null,
@@ -63,21 +63,11 @@ const ClientCarouselsWrapper = ({ carousels }) => {
         }
 
         if (item?.isPlaylist || item?.type) {
-          return (
-            <PlaylistCarousel key={item.title_slug || index} data={item} />
-          );
+          return <PlaylistCarousel key={item.title_slug || index} data={item} />;
         }
 
         // Default to VideoCarousel with id prop
-        return (
-          <VideoCarousel
-            key={item.title_slug || index}
-            title={item.title}
-            slug={item.title_slug}
-            data={item.data?.list || []}
-            id={item.id}
-          />
-        );
+        return <VideoCarousel key={item.title_slug || index} title={item.title} slug={item.title_slug} data={item.data?.list || []} id={item.id} />;
       })}
     </>
   );

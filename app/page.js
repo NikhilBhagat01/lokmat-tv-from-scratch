@@ -1,14 +1,14 @@
-export const dynamic = "force-static";
+export const dynamic = 'force-static';
 export const revalidate = 180; // Revalidate the page itself every 180 seconds (3 minutes)
 
-import Featuredchannel from "./components/Featuredchannel";
-import NewsLayout from "./components/NewsLayout";
-import PlaylistCarousel from "./components/PlaylistCarousel";
-import VideoCarousel from "./components/VideoCarousel";
-import { fetchAllDailymotionData } from "./lib/FetchData";
-import ClientCarouselsWrapper from "./components/ClientCarouselsWrapper"; //
-import { API_URL_DATA } from "./lib/apilist";
-import { Suspense } from "react";
+import Featuredchannel from './components/Featuredchannel';
+import NewsLayout from './components/NewsLayout';
+import PlaylistCarousel from './components/PlaylistCarousel';
+import VideoCarousel from './components/VideoCarousel';
+import { fetchAllDailymotionData } from './lib/FetchData';
+import ClientCarouselsWrapper from './components/ClientCarouselsWrapper'; //
+import { API_URL_DATA } from './lib/apilist';
+import { Suspense } from 'react';
 
 // Loading component for carousels
 function CarouselSkeleton() {
@@ -46,10 +46,7 @@ export default async function Home() {
   if (!data || data.length === 0) {
     return (
       <div className="p-8">
-        <ErrorSection
-          title="content"
-          error="Unable to load any content. Please try again later."
-        />
+        <ErrorSection title="content" error="Unable to load any content. Please try again later." />
       </div>
     );
   }
@@ -72,12 +69,7 @@ export default async function Home() {
         {data[0]?.error ? (
           <ErrorSection title="top stories" error={data[0].error} />
         ) : (
-          <NewsLayout
-            data={topStories}
-            title={topStoriesTitle}
-            slug={topStoriesSlug}
-            id={topStoriesId}
-          />
+          <NewsLayout data={topStories} title={topStoriesTitle} slug={topStoriesSlug} id={topStoriesId} />
         )}
       </Suspense>
 
@@ -117,41 +109,35 @@ export async function generateMetadata() {
     const topStory = data[0]?.data?.list?.[0];
 
     return {
-      title: topStory?.title || "Lokmat TV - Latest News & Videos",
-      description:
-        "Latest top stories and video content powered by Dailymotion.",
+      title: topStory?.title || 'Lokmat TV - Latest News & Videos',
+      description: 'Latest top stories and video content powered by Dailymotion.',
       openGraph: {
-        title: topStory?.title || "Lokmat TV - Latest News & Videos",
-        description: "Discover trending stories and video playlists.",
-        url: "https://www.lokmat.com/videos",
-        siteName: "LokmatTV",
+        title: topStory?.title || 'Lokmat TV - Latest News & Videos',
+        description: 'Discover trending stories and video playlists.',
+        url: 'https://www.lokmat.com/videos',
+        siteName: 'LokmatTV',
         images: [
           {
-            url:
-              topStory?.thumbnail_240_url ||
-              "https://yourdomain.com/og-image.jpg",
+            url: topStory?.thumbnail_240_url || 'https://yourdomain.com/og-image.jpg',
             width: 1200,
             height: 630,
           },
         ],
-        locale: "en_US",
-        type: "website",
+        locale: 'en_US',
+        type: 'website',
       },
       twitter: {
-        card: "summary_large_image",
-        title: topStory?.title || "Lokmat TV - Latest News & Videos",
-        description: "Watch trending news stories and playlists.",
-        images: [
-          topStory?.thumbnail_240_url ||
-            "https://yourdomain.com/twitter-image.jpg",
-        ],
+        card: 'summary_large_image',
+        title: topStory?.title || 'Lokmat TV - Latest News & Videos',
+        description: 'Watch trending news stories and playlists.',
+        images: [topStory?.thumbnail_240_url || 'https://yourdomain.com/twitter-image.jpg'],
       },
     };
   } catch (error) {
     // Fallback metadata if fetch fails
     return {
-      title: "Lokmat TV - Latest News & Videos",
-      description: "Latest news and video content from Lokmat TV.",
+      title: 'Lokmat TV - Latest News & Videos',
+      description: 'Latest news and video content from Lokmat TV.',
     };
   }
 }

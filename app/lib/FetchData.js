@@ -1,7 +1,7 @@
 // app/lib/fetchAllDailymotionData.ts
 
 import { Redis } from '@upstash/redis';
-import { API_URL_DATA, CATEGORY_DATA } from "./apilist";
+import { API_URL_DATA, CATEGORY_DATA } from './apilist';
 
 // Initialize Redis client
 const redis = new Redis({
@@ -9,16 +9,15 @@ const redis = new Redis({
   token: process.env.UPSTASH_REDIS_REST_TOKEN,
 });
 
-const VIDEO_FIELDS =
-  "id,thumbnail_240_url,url,title,description,created_time,duration,owner.screenname,owner.username,channel,onair";
+const VIDEO_FIELDS = 'id,thumbnail_240_url,url,title,description,created_time,duration,owner.screenname,owner.username,channel,onair';
 
 const CACHE_DURATION = {
   development: 180, // 3 minutes in development
   production: {
-    default: 300,    // 5 minutes
-    playlists: 600,  // 10 minutes
-    categories: 900  // 15 minutes
-  }
+    default: 300, // 5 minutes
+    playlists: 600, // 10 minutes
+    categories: 900, // 15 minutes
+  },
 };
 
 // Helper function to generate cache key
@@ -30,9 +29,7 @@ const generateCacheKey = (type, id, page = 1) => {
 async function fetchWithCache(url, cacheKey, type = 'default') {
   try {
     // Get environment-specific cache duration
-    const ttl = process.env.VERCEL_ENV === 'production'
-      ? CACHE_DURATION.production[type] || CACHE_DURATION.production.default
-      : CACHE_DURATION.development;
+    const ttl = process.env.VERCEL_ENV === 'production' ? CACHE_DURATION.production[type] || CACHE_DURATION.production.default : CACHE_DURATION.development;
 
     // Try to get data from cache first
     const cachedData = await redis.get(cacheKey);
@@ -44,7 +41,7 @@ async function fetchWithCache(url, cacheKey, type = 'default') {
     // If not in cache, fetch from API
     const res = await fetch(url, {
       headers: {
-        "User-Agent": "Mozilla/5.0 Chrome/90.0 Safari/537.36",
+        'User-Agent': 'Mozilla/5.0 Chrome/90.0 Safari/537.36',
       },
       next: { revalidate: ttl },
     });
@@ -64,21 +61,16 @@ async function fetchWithCache(url, cacheKey, type = 'default') {
 
 async function fetchAllDailymotionData() {
   try {
-    const fetches = API_URL_DATA.slice(0, 3).map(async (item) => {
+    const fetches = API_URL_DATA.slice(0, 3).map(async item => {
       // console.log(item)
       const isPlaylist = item.isPlaylist;
-      const isFeaturedChannel = item.title_slug === "featured-channels";
+      const isFeaturedChannel = item.title_slug === 'featured-channels';
       const title = item.title;
       const id = item.playlist_id;
 
-      let url = isPlaylist
-        ? `https://api.dailymotion.com/playlists/?fields=name,id,thumbnail_240_url,videos_total&ids=${item.playlist_id}`
-        : `https://api.dailymotion.com/playlist/${item.playlist_id}/videos?fields=${VIDEO_FIELDS}&limit=7&page=1`;
+      let url = isPlaylist ? `https://api.dailymotion.com/playlists/?fields=name,id,thumbnail_240_url,videos_total&ids=${item.playlist_id}` : `https://api.dailymotion.com/playlist/${item.playlist_id}/videos?fields=${VIDEO_FIELDS}&limit=7&page=1`;
 
-      const cacheKey = generateCacheKey(
-        isPlaylist ? 'playlist' : 'videos',
-        id
-      );
+      const cacheKey = generateCacheKey(isPlaylist ? 'playlist' : 'videos', id);
 
       try {
         const data = await fetchWithCache(url, cacheKey);
@@ -113,14 +105,14 @@ async function fetchAllDailymotionData() {
 async function fetchCategoryDataBySlug(slug) {
   try {
     // Find the category that matches the slug
-    const category = CATEGORY_DATA.find((item) => item.slug === slug);
+    const category = CATEGORY_DATA.find(item => item.slug === slug);
 
     if (!category) {
       console.error(`No category found for slug: ${slug}`);
       return null;
     }
 
-    const playlist = category.playlist.split(",");
+    const playlist = category.playlist.split(',');
     const cacheKey = generateCacheKey('category', slug);
 
     // Check cache first
@@ -130,23 +122,14 @@ async function fetchCategoryDataBySlug(slug) {
       return cachedCategory;
     }
 
-    const playlistFetches = playlist.map(async (playlistId) => {
+    const playlistFetches = playlist.map(async playlistId => {
       const nameUrl = `https://api.dailymotion.com/playlist/${playlistId}/?fields=name`;
       const videosUrl = `https://api.dailymotion.com/playlist/${playlistId}/videos?fields=${VIDEO_FIELDS}&limit=7&page=1`;
 
       try {
-        const [nameData, videosData] = await Promise.all([
-          fetchWithCache(
-            nameUrl,
-            generateCacheKey('playlist-name', playlistId)
-          ),
-          fetchWithCache(
-            videosUrl,
-            generateCacheKey('playlist-videos', playlistId)
-          ),
-        ]);
+        const [nameData, videosData] = await Promise.all([fetchWithCache(nameUrl, generateCacheKey('playlist-name', playlistId)), fetchWithCache(videosUrl, generateCacheKey('playlist-videos', playlistId))]);
 
-        const playlist_slug = nameData.name.replace(/\s+/g, "-").toLowerCase();
+        const playlist_slug = nameData.name.replace(/\s+/g, '-').toLowerCase();
 
         return {
           playlistName: nameData.name,
