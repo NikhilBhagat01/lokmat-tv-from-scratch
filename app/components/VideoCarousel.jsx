@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Loader2 } from 'lucide-react';
 import HeadingText from './HeadingText';
 import LazyImage from './LazyImage';
 
@@ -61,7 +61,9 @@ const HoverPreviewCard = ({ video, id }) => {
           <div className="absolute inset-0">
             <div className="relative w-full h-full">
               <LazyImage src={video.thumbnail_240_url} alt={video.title} fill sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 20vw" className={`object-cover transition-all duration-300 ${hovered ? 'scale-105' : 'scale-100'}`} />
-              <div className={`absolute inset-0 transition-all duration-300 ${hovered ? 'bg-neutral-800/90 animate-pulse' : 'bg-black/0'}`} />
+              <div className={`absolute inset-0 transition-all duration-300 flex items-center justify-center ${hovered ? 'bg-neutral-800/90' : 'bg-black/0'}`}>
+                {hovered && <Loader2 className="w-8 h-8 text-yellow-300 animate-spin" />}
+              </div>
             </div>
             <div className="absolute top-1 right-1 bg-black bg-opacity-75 text-white text-xs px-1 py-0.5 rounded z-10">{formattedDuration}</div>
           </div>
