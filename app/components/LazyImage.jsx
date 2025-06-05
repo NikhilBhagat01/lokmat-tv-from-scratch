@@ -42,7 +42,7 @@ const LazyImage = ({ src, alt, className = '', fill = false, width, height, size
               transition-opacity duration-500 ease-in-out
               ${isLoading ? 'opacity-0' : 'opacity-100'}
             `}
-            onLoadingComplete={() => setIsLoading(false)}
+            onLoad={() => setIsLoading(false)}
             quality={75}
             loading={priority ? 'eager' : 'lazy'}
           />

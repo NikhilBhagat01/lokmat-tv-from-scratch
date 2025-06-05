@@ -22,7 +22,9 @@ const CustomPrevArrow = ({ onClick }) => (
   </div>
 );
 
-const HoverPreviewCard = ({ video }) => {
+const HoverPreviewCard = ({ video, id }) => {
+  // console.log('title' + video.title + ' id' + id);
+
   const [showIframe, setShowIframe] = useState(false);
   const [timer, setTimer] = useState(null);
   const [hovered, setHovered] = useState(false);
@@ -81,7 +83,7 @@ const HoverPreviewCard = ({ video }) => {
 
 const VideoCarousel = ({ title, slug, data, id }) => {
   // console.log(data);
-  // console.table(title + "-----" + id);
+  // console.table(title + '-----' + id);
 
   const [isMobile, setIsMobile] = useState(false);
 
@@ -116,7 +118,7 @@ const VideoCarousel = ({ title, slug, data, id }) => {
           <Slider {...settings}>
             {data?.map(video => (
               <div key={video.id} className="px-3">
-                <HoverPreviewCard video={video} />
+                <HoverPreviewCard video={video} id={id} />
               </div>
             ))}
           </Slider>

@@ -7,7 +7,7 @@ import { fetchCategoryDataBySlug } from '@/app/lib/FetchData';
 import { redirect } from 'next/navigation';
 
 const page = async ({ params }) => {
-  const { slug } = params;
+  const { slug } = await params;
 
   const data = await fetchCategoryDataBySlug(slug);
 
@@ -25,7 +25,7 @@ const page = async ({ params }) => {
       <NewsLayout data={topStories} title={topStoriesTitle} slug={topStoriesSlug} id={topStoriesId} />
 
       {data?.playlists?.slice(1).map((item, index) => (
-        <VideoCarousel key={index} title={item.playlistName} slug={item.slug} data={item.videos} />
+        <VideoCarousel key={index} title={item.playlistName} slug={item.slug} data={item.videos} id={item.id} />
       ))}
     </>
   );
