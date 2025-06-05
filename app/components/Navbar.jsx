@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, CircleChevronDown, ArrowLeft, House } from 'lucide-react';
 import Link from 'next/link';
+import { CITY_DATA } from '../lib/apilist';
 
 const NavLinks = [
   { name: 'News', link: '/videos/news' },
@@ -15,45 +16,6 @@ const NavLinks = [
   { name: 'Bhakti', link: '/videos/bhakti' },
   { name: 'Events', link: '/videos/events' },
   { name: 'Inspirational', link: '/videos/inspirational' },
-];
-
-const cityLinks = [
-  {
-    name: 'Hello Pune',
-    link: 'https://www.lokmat.com/videos/?expand=customized+title%3Dvideo_playlist%28x7h72r%29',
-  },
-  {
-    name: 'Hello Mumbai',
-    link: 'https://www.lokmat.com/videos/?expand=customized+title%3Dvideo_playlist%28x7h731%29',
-  },
-  {
-    name: 'Hello Thane',
-    link: 'https://www.lokmat.com/videos/?expand=customized+title%3Dvideo_playlist%28x7h73p%29',
-  },
-  {
-    name: 'Hello Kalyan Dombivili',
-    link: 'https://www.lokmat.com/videos/?expand=customized+title%3Dvideo_playlist%28x7h73v%29',
-  },
-  {
-    name: 'Hello Nagpur',
-    link: 'https://www.lokmat.com/videos/?expand=customized+title%3Dvideo_playlist%28x7h73x%29',
-  },
-  {
-    name: 'Hello Chhatrapati Sambhajinagar',
-    link: 'https://www.lokmat.com/videos/?expand=customized+title%3Dvideo_playlist%28x7h73y%29',
-  },
-  {
-    name: 'Hello Nashik',
-    link: 'https://www.lokmat.com/videos/?expand=customized+title%3Dvideo_playlist%28x7h74c%29',
-  },
-  {
-    name: 'Hello Kolhapur',
-    link: 'https://www.lokmat.com/videos/?expand=customized+title%3Dvideo_playlist%28x7h74l%29',
-  },
-  {
-    name: 'Hello Jalgaon',
-    link: 'https://www.lokmat.com/videos/?expand=customized+title%3Dvideo_playlist%28x7h74t%29',
-  },
 ];
 
 const Navbar = () => {
@@ -104,9 +66,9 @@ const Navbar = () => {
                   className="cityWrap absolute top-8 right-0 bg-white rounded-md shadow-lg pt-2 overflow-hidden will-change-transform z-50"
                 >
                   <ul className="cityList whitespace-nowrap overflow-hidden text-ellipsis">
-                    {cityLinks.map((city, key) => (
+                    {CITY_DATA.map((city, key) => (
                       <li className="cityItem pl-2 pb-2" key={key}>
-                        <Link href={`/${city.link}`} className="block max-w-full overflow-hidden text-ellipsis whitespace-nowrap" title={city.name}>
+                        <Link href={`/videos/${city.slug}/${city.playlist}`} className="block max-w-full overflow-hidden text-ellipsis whitespace-nowrap" title={city.name}>
                           {city.name}
                         </Link>
                       </li>
@@ -152,9 +114,9 @@ const Navbar = () => {
                   className="cityWrap absolute top-8 right-0 bg-white rounded-md shadow-lg pt-2 overflow-hidden will-change-transform z-50"
                 >
                   <ul className="cityList whitespace-nowrap overflow-hidden text-ellipsis">
-                    {cityLinks.map((city, key) => (
+                    {CITY_DATA.map((city, key) => (
                       <li className="cityItem pl-2 pb-2" key={key}>
-                        <Link href={`/${city.link}`} className="block max-w-full overflow-hidden text-ellipsis whitespace-nowrap" title={city.name}>
+                        <Link href={`/videos/${city.slug}/${city.playlist}`} className="block max-w-full overflow-hidden text-ellipsis whitespace-nowrap" title={city.name}>
                           {city.name}
                         </Link>
                       </li>
