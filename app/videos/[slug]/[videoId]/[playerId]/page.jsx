@@ -47,7 +47,7 @@ const RelatedVideoCard = ({ video, slug, videoId, playerId }) => {
   return (
     <Link href={`/videos/${slug}/${videoId}/${video.id}`} className={`group flex gap-3 hover:bg-neutral-800 p-2 rounded-lg transition ${playerId === video.id ? 'bg-neutral-800' : ''}`}>
       <div className="relative w-40 h-24 flex-shrink-0 rounded overflow-hidden">
-        <Image src={video.thumbnail_240_url || '/placeholder.jpg'} alt={video.title || 'Video thumbnail'} fill className="object-cover" sizes="160px" />
+        <img src={video.thumbnail_240_url || '/placeholder.jpg'} alt={video.title || 'Video thumbnail'} className="absolute inset-0 w-full h-full object-cover" />
         {typeof video.duration === 'number' && <div className="absolute bottom-1 right-1 bg-black bg-opacity-75 text-white text-xs px-1 rounded">{getDuration(video.duration)}</div>}
       </div>
       <div className="flex-1 min-w-0">
