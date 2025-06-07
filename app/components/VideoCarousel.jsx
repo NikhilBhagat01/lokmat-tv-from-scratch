@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { ChevronRight, Loader2 } from 'lucide-react';
 import HeadingText from './HeadingText';
 import LazyImage from './LazyImage';
+import Link from 'next/link';
 
 // Dynamically import react-slick (client-only)
 const Slider = dynamic(() => import('react-slick'), { ssr: false });
@@ -22,8 +23,9 @@ const CustomPrevArrow = ({ onClick }) => (
   </div>
 );
 
-const HoverPreviewCard = ({ video, id }) => {
+const HoverPreviewCard = ({ video, slug, id }) => {
   // console.log('title' + video.title + ' id' + id);
+  // console.log(video);
 
   const [showIframe, setShowIframe] = useState(false);
   const [timer, setTimer] = useState(null);
@@ -54,26 +56,28 @@ const HoverPreviewCard = ({ video, id }) => {
 
   return (
     <div className="cursor-pointer space-y-2" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <div className="group relative w-full h-0 pt-[56.25%] overflow-hidden rounded shadow-md">
-        {showIframe ? (
-          <iframe src={`https://www.dailymotion.com/widget/preview/video/${video.id}?title=none&duration=none&mode=video&trigger=auto`} allow="autoplay" allowFullScreen className="absolute inset-0 w-full h-full" />
-        ) : (
-          <div className="absolute inset-0">
-            <div className="relative w-full h-full">
-              <LazyImage src={video.thumbnail_240_url} alt={video.title} fill sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 20vw" className={`object-cover transition-all duration-300 ${hovered ? 'scale-105' : 'scale-100'}`} />
-              <div className={`absolute inset-0 transition-all duration-300 flex items-center justify-center ${hovered ? 'bg-neutral-800/90' : 'bg-black/0'}`}>
-                {hovered && <Loader2 className="w-8 h-8 text-yellow-300 animate-spin" />}
-              </div>
+      <Link href={`/videos/${slug}/${id}/${video.id}`}>
+        <div className="group relative w-full h-0 pt-[56.25%] overflow-hidden rounded shadow-md">
+          {showIframe ? (
+            <div className="absolute inset-0 pointer-events-none">
+              <iframe src={`https://www.dailymotion.com/widget/preview/video/${video.id}?title=none&duration=none&mode=video&trigger=auto`} allow="autoplay" allowFullScreen className="w-full h-full" />
             </div>
-            <div className="absolute top-1 right-1 bg-black bg-opacity-75 text-white text-xs px-1 py-0.5 rounded z-10">{formattedDuration}</div>
-          </div>
-        )}
-      </div>
+          ) : (
+            <div className="absolute inset-0">
+              <div className="relative w-full h-full">
+                <LazyImage src={video.thumbnail_240_url} alt={video.title} fill sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 20vw" className={`object-cover transition-all duration-300 ${hovered ? 'scale-105' : 'scale-100'}`} />
+                <div className={`absolute inset-0 transition-all duration-300 flex items-center justify-center ${hovered ? 'bg-neutral-800/90' : 'bg-black/0'}`}>{hovered && <Loader2 className="w-8 h-8 text-yellow-300 animate-spin" />}</div>
+              </div>
+              <div className="absolute top-1 right-1 bg-black bg-opacity-75 text-white text-xs px-1 py-0.5 rounded z-10">{formattedDuration}</div>
+            </div>
+          )}
+        </div>
 
-      <div className="text-xs px-1">
-        <div className="text-yellow-300 text-[13px] mb-2">{formattedDate}</div>
-        <div className="text-[15px] text-yellow-400 font-medium leading-snug line-clamp-3">{video.title}</div>
-      </div>
+        <div className="text-xs px-1">
+          <div className="text-yellow-300 text-[13px] mb-2">{formattedDate}</div>
+          <div className="text-[15px] text-yellow-400 font-medium leading-snug line-clamp-3">{video.title}</div>
+        </div>
+      </Link>
     </div>
   );
 };
@@ -86,6 +90,7 @@ const HoverPreviewCard = ({ video, id }) => {
 const VideoCarousel = ({ title, slug, data, id }) => {
   // console.log(data);
   // console.table(title + '-----' + id);
+  // console.log(slug);
 
   const [isMobile, setIsMobile] = useState(false);
 
@@ -111,7 +116,7 @@ const VideoCarousel = ({ title, slug, data, id }) => {
         <div className="flex space-x-2 overflow-x-auto scrollbar-hide mt-4">
           {data?.map(video => (
             <div key={video.id} className="min-w-[60%]">
-              <HoverPreviewCard video={video} />
+              <HoverPreviewCard video={video} slug={slug} id={id} />
             </div>
           ))}
         </div>
@@ -120,7 +125,7 @@ const VideoCarousel = ({ title, slug, data, id }) => {
           <Slider {...settings}>
             {data?.map(video => (
               <div key={video.id} className="px-3">
-                <HoverPreviewCard video={video} id={id} />
+                <HoverPreviewCard video={video} slug={slug} id={id} />
               </div>
             ))}
           </Slider>

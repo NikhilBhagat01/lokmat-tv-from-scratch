@@ -1,8 +1,9 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState, useRef, useCallback } from 'react';
 
-const ExpandPlaylist = ({ videoId }) => {
+const ExpandPlaylist = ({ videoId, slug }) => {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [showVideo, setShowVideo] = useState(false);
   const [videos, setVideos] = useState([]);
@@ -112,12 +113,12 @@ const ExpandPlaylist = ({ videoId }) => {
         {/* Text */}
         <div className="w-full md:w-2/5 md:text-left">
           <h2 className="text-xl md:text-2xl font-bold mb-4">{selectedVideo.title}</h2>
-          <button className="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-300 font-semibold flex items-center gap-2" onClick={() => setShowVideo(true)}>
+          <Link href={`/videos/${slug}/${videoId}/${selectedVideo.id}`} className="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-300 font-semibold flex items-center gap-2 w-max">
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M6 4l10 6-10 6V4z" />
             </svg>
             Play Now
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -135,10 +136,11 @@ const ExpandPlaylist = ({ videoId }) => {
             }).format(new Date(video.created_time * 1000));
 
             return (
-              <div
+              <Link
+                href={`/videos/${slug}/${videoId}/${video.id}`}
                 key={video.id}
                 ref={isLastVideo ? lastVideoRef : null}
-                className={`cursor-pointer group bg-neutral-900 rounded-lg p-2 ${selectedVideo.id === video.id ? 'ring-2 ring-yellow-400' : ''}`}
+                className={`cursor-pointer group bg-neutral-900 rounded-lg p-2 `}
                 onClick={() => {
                   setSelectedVideo(video);
                   setShowVideo(false);
@@ -154,7 +156,7 @@ const ExpandPlaylist = ({ videoId }) => {
                   <div className="text-yellow-300 text-xs mb-1">{formattedDate}</div>
                   <h3 className="text-[15px] text-yellow-400 font-medium leading-snug line-clamp-3 group-hover:text-yellow-300">{video.title}</h3>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>

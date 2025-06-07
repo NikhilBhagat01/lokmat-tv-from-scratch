@@ -7,7 +7,7 @@ import { fetchCategoryDataBySlug } from '@/app/lib/FetchData';
 import { redirect } from 'next/navigation';
 
 export async function generateMetadata({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
   const data = await fetchCategoryDataBySlug(slug);
 
   if (!data) return {};
