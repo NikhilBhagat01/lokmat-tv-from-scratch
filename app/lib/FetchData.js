@@ -141,9 +141,9 @@ async function fetchVideoById(videoId) {
   }
 }
 
-async function fetchRelatedVideos(videoId) {
+async function fetchRelatedVideos(videoId, page = 1) {
   try {
-    const url = `https://api.dailymotion.com/playlist/${videoId}/videos?fields=id,thumbnail_240_url,url,title,description,created_time,duration,owner.screenname,owner.username,channel,onair&limit=12&page=1`;
+    const url = `https://api.dailymotion.com/playlist/${videoId}/videos?fields=id,thumbnail_240_url,url,title,description,created_time,duration,owner.screenname,owner.username,channel,onair&limit=12&page=${page}`;
     
     const response = await fetch(url, {
       headers: {
@@ -159,7 +159,7 @@ async function fetchRelatedVideos(videoId) {
     return response.json();
   } catch (error) {
     console.error('Error fetching related videos:', error);
-    return { list: [] };
+    return { list: [], has_more: false };
   }
 }
 
