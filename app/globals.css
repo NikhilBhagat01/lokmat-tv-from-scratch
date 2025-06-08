@@ -98,6 +98,11 @@ li {
   /* Firefox */
 }
 
+.scroll-css{
+  scrollbar-color: gray transparent; /* thumb color, track color */
+  scrollbar-width: thin;            /* optional: thin or auto */
+}
+
 @keyframes shimmer {
   0% {
     background-position: -200% 0;

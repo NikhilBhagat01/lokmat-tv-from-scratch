@@ -56,13 +56,6 @@ const RelatedVideoCard = ({ video, slug, videoId, playerId }) => {
 };
 
 const VideoPlayer = ({ initialVideoData, initialRelatedVideos, videoId, playerId, slug }) => {
-  // Early return if required props are missing
-  // if (!initialVideoData || !initialRelatedVideos || !params) {
-  //   return <div>Loading...</div>;
-  // }
-
-  // const { videoId, playerId, slug } = params;
-
   const [videoData] = useState(initialVideoData);
   const [relatedVideos, setRelatedVideos] = useState(initialRelatedVideos?.list || []);
   const [page, setPage] = useState(1);
@@ -161,7 +154,7 @@ const VideoPlayer = ({ initialVideoData, initialRelatedVideos, videoId, playerId
 
           {/* Sidebar - Related Videos */}
           <div className={`lg:col-span-1 ${isMobile ? 'mt-8' : 'sticky top-4 self-start '} hide-scrollbar`}>
-            <div className={`${isMobile ? '' : 'max-h-[calc(100vh-1rem)] overflow-y-auto scrollbar-none'} rounded-lg bg-neutral-900`}>
+            <div className={`${isMobile ? '' : 'max-h-[calc(100vh-1rem)] overflow-y-auto scrollbar-none'} rounded-lg bg-neutral-900 scroll-css`}>
               <h2 className="text-lg font-semibold text-yellow-400 mb-4 sticky top-0 bg-neutral-900 py-2 z-10">Related Videos</h2>
               <div className="space-y-4 pb-4">
                 {relatedVideos.map(video => (
