@@ -100,7 +100,7 @@ li {
 
 .scroll-css{
   scrollbar-color: gray transparent; /* thumb color, track color */
-  scrollbar-width: thin;            /* optional: thin or auto */
+  scrollbar-width: thin; /* optional: thin or auto */
 }
 
 @keyframes shimmer {
