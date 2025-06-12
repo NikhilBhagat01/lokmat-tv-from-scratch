@@ -64,6 +64,19 @@ const VideoPlayer = ({ initialVideoData, initialRelatedVideos, videoId, playerId
   const loadingRef = useRef();
   const [isMobile, setIsMobile] = useState(false);
 
+  console.log(videoData);
+
+  const minutes = Math.floor(videoData.duration / 60);
+  const seconds = videoData.duration % 60;
+  const formattedDuration = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+  const formattedDate = new Intl.DateTimeFormat('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(new Date(videoData.created_time * 1000));
+
   // Handle responsive layout
   useEffect(() => {
     const checkMobile = () => {
@@ -131,7 +144,9 @@ const VideoPlayer = ({ initialVideoData, initialRelatedVideos, videoId, playerId
 
               <div className="flex items-center justify-between text-gray-400 text-sm">
                 <div className="flex items-center space-x-4">
-                  <span>•</span>
+                  <span className="text-gray-300 hover:text-yellow-400 transition-colors">{videoData?.views_total} views</span>
+                  <span className="text-gray-500">•</span>
+                  <span className="text-gray-300 hover:text-yellow-400 transition-colors">{formattedDate}</span>
                 </div>
 
                 <div className="flex items-center space-x-4">
