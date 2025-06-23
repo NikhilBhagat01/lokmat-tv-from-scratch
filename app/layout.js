@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#121212] flex flex-col h-screen text-amber-400`}>
         <Navbar />
-        <main className="flex-1 overflow-auto mt-[92px] md:mt-[140px]  overflow-x-hidden">{children}</main>
+        <main className="flex-1 overflow-auto mt-[92px] md:mt-[140px] ">{children}</main>
       </body>
     </html>
   );
