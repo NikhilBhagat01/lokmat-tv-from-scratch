@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import HeadingText from './HeadingText';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import Link from 'next/link';
 
 const CustomPrevArrow = ({ onClick }) => (
   <div onClick={onClick} className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/30 hover:bg-white/50 text-white rounded-full w-9 h-9 flex items-center justify-center backdrop-blur-sm cursor-pointer">
@@ -28,6 +29,7 @@ export default function NewsLayout({ data, title, slug, id }) {
   const [isMobile, setIsMobile] = useState(false);
   const sliderRef = useRef(null);
 
+  // console.log(id);
   // Responsive settings
   useEffect(() => {
     const updateSlidesToShow = () => {
@@ -81,6 +83,7 @@ export default function NewsLayout({ data, title, slug, id }) {
     ],
   };
 
+  // console.log(selectedItem);
   return (
     <div className="bg-black text-yellow-400 px-4 md:pt-[43px] font-sans md:mb-6">
       {/* Top Section */}
@@ -99,12 +102,12 @@ export default function NewsLayout({ data, title, slug, id }) {
         {/* Text */}
         <div className="w-full md:w-2/5 md:text-left ">
           <h2 className="text-xl md:text-2xl font-bold mb-4  ">{selectedItem.title}</h2>
-          <button className="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-300 font-semibold" onClick={() => console.log('Autoplay controls video')}>
+          <Link href={`/videos/${slug}/${id}/${selectedItem.id}`} className="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-300 font-semibold">
             <svg className="w-5 h-5 inline-block " fill="currentColor" viewBox="0 0 20 20">
               <path d="M6 4l10 6-10 6V4z" />
             </svg>
             Play
-          </button>
+          </Link>
         </div>
       </div>
 

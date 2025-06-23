@@ -88,10 +88,12 @@ export default async function Home() {
     );
   }
 
+  // console.log(data[0])
   const topStories = data[0]?.data?.list || [];
   const topStoriesTitle = data[0]?.title;
   const topStoriesSlug = data[0]?.title_slug;
   const topStoriesId = data[0]?.id;
+
 
   const carousels = data.slice(1);
 
