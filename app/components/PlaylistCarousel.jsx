@@ -90,7 +90,7 @@ export default function PlaylistsCarousel({ data }) {
   return (
     <div className="mb-14 px-1 md:px-2">
       <div className="flex justify-between items-center mb-4">
-        <HeadingText name={data.title} link="/" />
+        <HeadingText name={data.title} link={data.title_slug} isPlayList />
       </div>
 
       {/* Desktop Carousel */}

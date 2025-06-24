@@ -2,9 +2,9 @@ import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
-const HeadingText = ({ name, link, id }) => {
+const HeadingText = ({ name, link, id, isPlayList }) => {
   // console.log(link);
-  const href = id ? `/videos/${link}/${id}` : `/videos/${link}`;
+  const href = isPlayList ? `/playlist/${link}` : id ? `/videos/${link}/${id}` : `/videos/${link}`;
   return (
     <div className="flex items-center gap-4 px-3">
       <h3 className="text-[23px] font-semibold">{name}</h3>

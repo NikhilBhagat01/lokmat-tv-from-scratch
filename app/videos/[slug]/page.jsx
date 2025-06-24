@@ -10,6 +10,7 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const data = await fetchCategoryDataBySlug(slug);
 
+  // console.log(data);
   if (!data) return {};
 
   const firstPlaylist = data?.playlists[0] || [];
