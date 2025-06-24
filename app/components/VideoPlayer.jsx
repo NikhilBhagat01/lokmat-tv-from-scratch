@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { fetchRelatedVideos } from '@/app/lib/FetchData';
 import Link from 'next/link';
+import Adbox from './Adbox';
 
 // Related Video Card Component
 const RelatedVideoCard = ({ video, slug, videoId, playerId }) => {
@@ -169,6 +170,10 @@ const VideoPlayer = ({ initialVideoData, initialRelatedVideos, videoId, playerId
 
           {/* Sidebar - Related Videos */}
           <div className={`lg:col-span-1 ${isMobile ? 'mt-8' : 'sticky top-4 self-start '} hide-scrollbar`}>
+            {/* <div className="flex justify-center align-center Adbox">
+              <div className="bg-gray-300 w-[300px] h-[250px]"></div>
+            </div> */}
+            <Adbox />
             <div className={`${isMobile ? '' : 'max-h-[calc(100vh-1rem)] overflow-y-auto scrollbar-none'} rounded-lg bg-neutral-900 scroll-css`}>
               <h2 className="text-lg font-semibold text-yellow-400 mb-4 sticky top-0 bg-neutral-900 py-2 z-10">Related Videos</h2>
               <div className="space-y-4 pb-4">

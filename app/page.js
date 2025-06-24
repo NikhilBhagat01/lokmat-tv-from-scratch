@@ -45,7 +45,8 @@ import VideoCarousel from './components/VideoCarousel';
 import { fetchAllDailymotionData } from './lib/FetchData';
 import ClientCarouselsWrapper from './components/ClientCarouselsWrapper'; //
 import { API_URL_DATA } from './lib/apilist';
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
+import Adbox from './components/Adbox';
 
 // Loading component for carousels
 function CarouselSkeleton() {
@@ -94,48 +95,50 @@ export default async function Home() {
   const topStoriesSlug = data[0]?.title_slug;
   const topStoriesId = data[0]?.id;
 
-
   const carousels = data.slice(1);
 
   // Split data
   const ssrCarousels = data.slice(1); // First three items for SSR
-  const csrCarousels = API_URL_DATA.slice(3);
+  // const csrCarousels = API_URL_DATA.slice(3);
+
+  // Inject Adboxes every 3rd item
+  const csrCarouselsWithAdboxes = API_URL_DATA.slice(3).flatMap((item, index) => {
+    const items = [item];
+    if ((index + 1) % 3 === 0) {
+      items.push({ type: 'adbox', id: `ad-${index}` }); // marker for Adbox
+    }
+    return items;
+  });
+
+  // console.log(csrCarouselsWithAdboxes);
 
   // console.log(ssrCarousels)
   return (
     <>
-      <Suspense fallback={<CarouselSkeleton />}>
-        {data[0]?.error ? (
-          <ErrorSection title="top stories" error={data[0].error} />
-        ) : (
-          <NewsLayout data={topStories} title={topStoriesTitle} slug={topStoriesSlug} id={topStoriesId} />
-        )}
-      </Suspense>
+      <Suspense fallback={<CarouselSkeleton />}>{data[0]?.error ? <ErrorSection title="top stories" error={data[0].error} /> : <NewsLayout data={topStories} title={topStoriesTitle} slug={topStoriesSlug} id={topStoriesId} />}</Suspense>
 
       <div className="pl-3 pb-3 text-yellow-400">
         {/* SSR part */}
         {ssrCarousels.map((item, index) => (
-          <Suspense Suspense key={index} fallback={<CarouselSkeleton />}>
-            {item?.error ? (
-              <ErrorSection title={item.title} error={item.error} />
-            ) : item?.isFeaturedChannel ? (
-              <Featuredchannel data={item} />
-            ) : item?.isPlaylist || item?.type ? (
-              <PlaylistCarousel data={item} />
-            ) : (
-              <VideoCarousel
-                title={item.title}
-                slug={item.title_slug}
-                data={item?.data?.list || []}
-                id={item?.id}
-              />
-            )}
-          </Suspense>
+          <React.Fragment key={index}>
+            {index % 2 === 0 && <Adbox key={`ad-${index}`} width="800px" height="100px" />}
+            <Suspense Suspense key={index} fallback={<CarouselSkeleton />}>
+              {item?.error ? (
+                <ErrorSection title={item.title} error={item.error} />
+              ) : item?.isFeaturedChannel ? (
+                <Featuredchannel data={item} />
+              ) : item?.isPlaylist || item?.type ? (
+                <PlaylistCarousel data={item} />
+              ) : (
+                <VideoCarousel title={item.title} slug={item.title_slug} data={item?.data?.list || []} id={item?.id} />
+              )}
+            </Suspense>
+          </React.Fragment>
         ))}
 
         {/* CSR part - client-only rendering */}
         <Suspense fallback={<CarouselSkeleton />}>
-          <ClientCarouselsWrapper carousels={csrCarousels} />
+          <ClientCarouselsWrapper carousels={csrCarouselsWithAdboxes} />
         </Suspense>
       </div>
     </>
