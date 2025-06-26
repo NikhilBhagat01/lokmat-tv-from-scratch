@@ -95,7 +95,7 @@ const ClientCarouselsWrapper = ({ carousels }) => {
     <>
       {fetchedData.map((item, index) => {
         if (item.type === 'adbox') {
-          return <Adbox key={item.id || `ad-${index}`} width="800px" height="100px" />;
+          return <Adbox key={item.id || `ad-${index}`} />;
         }
         if (item?.isFeaturedChannel) {
           return <Featuredchannel key={item.title_slug || index} data={item} />;
