@@ -92,17 +92,17 @@ export default function NewsLayout({ data, title, slug, id }) {
         <div className="w-full md:w-3/5">
           <div className="w-full aspect-video rounded-lg overflow-hidden">
             {showVideo ? (
-              <iframe src={`https://www.dailymotion.com/widget/preview/video/${selectedItem.id}?title=none&duration=none&mode=video&trigger=auto`} title="Dailymotion Video" allowFullScreen loading="lazy" className="w-full h-full" />
+              <iframe src={`https://www.dailymotion.com/widget/preview/video/${selectedItem?.id}?title=none&duration=none&mode=video&trigger=auto`} title="Dailymotion Video" allowFullScreen loading="lazy" className="w-full h-full" />
             ) : (
-              <img src={selectedItem.thumbnail_240_url} alt="Press" loading="lazy" className="w-full h-full object-cover" />
+              <img src={selectedItem?.thumbnail_240_url} alt="Press" loading="lazy" className="w-full h-full object-cover" />
             )}
           </div>
         </div>
 
         {/* Text */}
         <div className="w-full md:w-2/5 md:text-left ">
-          <h2 className="text-xl md:text-2xl font-bold mb-4  ">{selectedItem.title}</h2>
-          <Link href={`/videos/${slug}/${id}/${selectedItem.id}`} className="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-300 font-semibold">
+          <h2 className="text-xl md:text-2xl font-bold mb-4  ">{selectedItem?.title}</h2>
+          <Link href={`/videos/${slug}/${id}/${selectedItem?.id}`} className="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-300 font-semibold">
             <svg className="w-5 h-5 inline-block " fill="currentColor" viewBox="0 0 20 20">
               <path d="M6 4l10 6-10 6V4z" />
             </svg>
