@@ -7,7 +7,6 @@ import { ChevronRight, Loader2 } from 'lucide-react';
 import HeadingText from './HeadingText';
 import LazyImage from './LazyImage';
 import Link from 'next/link';
-import useMounted from '../hooks/useMounted';
 
 // Dynamically import react-slick (client-only)
 const Slider = dynamic(() => import('react-slick'), { ssr: false });
@@ -93,7 +92,8 @@ const VideoCarousel = ({ title, slug, data, id }) => {
   // console.table(title + '-----' + id);
   // console.log(slug);
 
-  const { mounted, isMobile } = useMounted();
+  const [isMobile, setIsMobile] = useState(false);
+
   const settings = {
     infinite: false,
     dots: false,
@@ -112,16 +112,7 @@ const VideoCarousel = ({ title, slug, data, id }) => {
     <div className="px-2 mb-14">
       <HeadingText name={title} link={slug} id={id} />
 
-      {!mounted ? (
-        // Server-side: static grid fallback for SEO
-        <div className="flex space-x-2 overflow-x-auto scrollbar-hide mt-4">
-          {data?.map(video => (
-            <div key={video.id}>
-              <HoverPreviewCard video={video} slug={slug} id={id} />
-            </div>
-          ))}
-        </div>
-      ) : isMobile ? (
+      {isMobile ? (
         <div className="flex space-x-2 overflow-x-auto scrollbar-hide mt-4">
           {data?.map(video => (
             <div key={video.id} className="min-w-[60%]">

@@ -119,16 +119,18 @@ export default async function Home() {
 
       <div className="pl-3 pb-3 text-yellow-400">
         {/* SSR part */}
-        {data?.map((item, index) => (
+        {data?.slice(1).map((item, index) => (
           <React.Fragment key={index}>
             {index % 2 === 0 && <Adbox key={`ad-${index}`} width="800px" height="100px" />}
             <Suspense Suspense key={index} fallback={<CarouselSkeleton />}>
               {item?.error ? (
                 <ErrorSection title={item.title} error={item.error} />
               ) : item?.isFeaturedChannel ? (
-                <Featuredchannel data={item} />
+                // <Featuredchannel data={item} />
+                <div></div>
               ) : item?.isPlaylist || item?.type ? (
-                <PlaylistCarousel data={item} />
+                // <PlaylistCarousel data={item} />
+                <div></div>
               ) : (
                 <VideoCarousel title={item?.title} slug={item?.title_slug} data={item?.data?.list || []} id={item?.id} />
               )}
