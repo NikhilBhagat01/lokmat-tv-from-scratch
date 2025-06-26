@@ -65,7 +65,7 @@ const VideoPlayer = ({ initialVideoData, initialRelatedVideos, videoId, playerId
   const loadingRef = useRef();
   const [isMobile, setIsMobile] = useState(false);
 
-  console.log(videoData);
+  // console.log(videoData);
 
   const minutes = Math.floor(videoData.duration / 60);
   const seconds = videoData.duration % 60;

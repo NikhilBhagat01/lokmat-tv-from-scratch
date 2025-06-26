@@ -32,6 +32,10 @@ const ClientCarouselsWrapper = ({ carousels }) => {
             url = `https://api.dailymotion.com/playlist/${item.playlist_id}/videos?fields=id,thumbnail_240_url,url,title,description,created_time,duration,owner.screenname,owner.username,channel,onair&limit=7&page=1`;
           }
 
+          if (isFeaturedChannel) {
+            url = 'https://api.dailymotion.com/users?fields=id,cover_250_url,avatar_60_url,url,screenname&parent=lokmatonline&sort=recent&limit=7';
+          }
+
           // console.log(item.title +'-----'+url)
           try {
             const res = await fetch(url);
@@ -60,36 +64,14 @@ const ClientCarouselsWrapper = ({ carousels }) => {
     fetchAll();
   }, [carousels]);
 
-  console.log(fetchedData);
+  // console.log(fetchedData);
 
   // console.log(fetchedData);
   if (fetchedData.length === 0) {
     return <div className="text-white px-3">Loading carousels...</div>;
   }
 
-  console.log(fetchedData);
-
-  // return (
-  //   <>
-  //     {fetchedData.map((item, index) => {
-  //       const components = [];
-
-  //       if (index % 3 === 0) {
-  //         components.push(<Adbox key={`ad-${index}`} />);
-  //       }
-
-  //       if (item?.isFeaturedChannel) {
-  //         components.push(<Featuredchannel key={item.title_slug || `fc-${index}`} data={item} />);
-  //       } else if (item?.isPlaylist || item?.type) {
-  //         components.push(<PlaylistCarousel key={item.title_slug || `pc-${index}`} data={item} />);
-  //       } else {
-  //         components.push(<VideoCarousel key={item.title_slug || `vc-${index}`} title={item.title} slug={item.title_slug} data={item.data?.list || []} id={item.id} />);
-  //       }
-
-  //       return components;
-  //     })}
-  //   </>
-  // );
+  // console.log(fetchedData);
 
   return (
     <>

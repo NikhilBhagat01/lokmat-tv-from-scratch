@@ -13,7 +13,7 @@ const page = async ({ params }) => {
 
   const playlistData = await fetchPlaylistDataBySlug(slug);
 
-  console.log(playlistData);
+  // console.log(playlistData);
   if (!playlistData) return redirect('/');
 
   const firstPlaylist = playlistData[0] || [];

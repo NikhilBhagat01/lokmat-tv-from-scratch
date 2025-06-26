@@ -14,6 +14,11 @@ async function fetchAllDailymotionData() {
 
       let url = isPlaylist ? `https://api.dailymotion.com/playlists/?fields=name,id,thumbnail_240_url,videos_total&ids=${item.playlist_id}` : `https://api.dailymotion.com/playlist/${item.playlist_id}/videos?fields=${VIDEO_FIELDS}&limit=7&page=1`;
 
+      // if (isFeaturedChannel) {
+      //   url = 'https://api.dailymotion.com/users?fields=id,cover_250_url,avatar_60_url,url,screenname&parent=lokmatonline&sort=recent&limit=7';
+      //   console.log(url);
+      // }
+
       try {
         const response = await fetch(url, {
           headers: {

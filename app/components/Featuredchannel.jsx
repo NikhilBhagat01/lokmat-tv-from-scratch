@@ -34,7 +34,7 @@ const FeaturedCard = ({ channel }) => {
       className="relative shrink-0 rounded-lg w-48 h-40 sm:w-60 md:w-64  md:h-64 bg-no-repeat bg-center bg-cover mx-2"
       // style={{ backgroundImage: `url(${channel.cover_250_url})` }}
       style={{
-        backgroundImage: `url('https://d3pc1xvrcw35tl.cloudfront.net/images/2022/07/854207/sakhi-dm-channel.jpg')`,
+        backgroundImage: `url(${channel.cover_250_url || 'https://d3pc1xvrcw35tl.cloudfront.net/images/2022/07/854207/sakhi-dm-channel.jpg'} )`,
       }}
     >
       <div className="absolute bottom-0 w-full h-[40%] bg-gradient-to-t from-black/70 to-transparent">
@@ -57,7 +57,10 @@ const Featuredchannel = ({ data }) => {
 
       {/* Horizontal scroll container */}
       <div className="flex overflow-x-auto md:overflow-x-visible scrollbar-hide md:flex-wrap ">
-        {Featuredchannels.map(channel => (
+        {/* {Featuredchannels.map(channel => (
+          <FeaturedCard key={channel.id} channel={channel} />
+        ))} */}
+        {data?.data?.list?.map(channel => (
           <FeaturedCard key={channel.id} channel={channel} />
         ))}
       </div>
