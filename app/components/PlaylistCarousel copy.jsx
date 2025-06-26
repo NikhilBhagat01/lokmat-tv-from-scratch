@@ -6,7 +6,6 @@ import { ChevronRight, MoreHorizontal } from 'lucide-react';
 import HeadingText from './HeadingText';
 import LazyImage from './LazyImage';
 import dynamic from 'next/dynamic';
-import useMounted from '../hooks/useMounted';
 
 const Slider = dynamic(() => import('react-slick'), { ssr: false });
 
@@ -39,8 +38,6 @@ export default function PlaylistsCarousel({ data }) {
   // console.log(data);
   // console.log(data.data.list);
   // Custom arrow component for the slider
-  const { mounted, isMobile } = useMounted();
-
   const NextArrow = props => {
     const { className, style, onClick } = props;
     return (
@@ -100,8 +97,18 @@ export default function PlaylistsCarousel({ data }) {
       </div>
 
       {/* Desktop Carousel */}
+      <div className="relative px-1 hidden md:block">
+        <Slider {...settings}>
+          {data?.data?.list?.map(playlist => (
+            <div key={playlist?.id} className="px-3">
+              <DailymotionCard videoId={playlist?.id} title={playlist?.name} videoCount={playlist?.videos_total} thumbnailUrl={playlist?.thumbnail_240_url || 'https://s1.dmcdn.net/v/WQ-hm1clSFkSRH5V9/x240'} />
+            </div>
+          ))}
+        </Slider>
+      </div>
 
-      {!mounted || isMobile ? (
+      {/* Mobile Scrollable List */}
+      <div className="md:hidden">
         <div className="flex overflow-x-auto gap-4 md:pb-4 scrollbar-hide -mx-2 px-2">
           {data?.data?.list?.map(playlist => (
             <div key={playlist.id} className="flex-none w-[280px]">
@@ -109,17 +116,7 @@ export default function PlaylistsCarousel({ data }) {
             </div>
           ))}
         </div>
-      ) : (
-        <div className="relative px-1 hidden md:block">
-          <Slider {...settings}>
-            {data?.data?.list?.map(playlist => (
-              <div key={playlist?.id} className="px-3">
-                <DailymotionCard videoId={playlist?.id} title={playlist?.name} videoCount={playlist?.videos_total} thumbnailUrl={playlist?.thumbnail_240_url || 'https://s1.dmcdn.net/v/WQ-hm1clSFkSRH5V9/x240'} />
-              </div>
-            ))}
-          </Slider>
-        </div>
-      )}
+      </div>
     </div>
   );
 }

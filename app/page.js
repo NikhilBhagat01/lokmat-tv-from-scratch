@@ -126,11 +126,9 @@ export default async function Home() {
               {item?.error ? (
                 <ErrorSection title={item.title} error={item.error} />
               ) : item?.isFeaturedChannel ? (
-                // <Featuredchannel data={item} />
-                <div></div>
+                <Featuredchannel data={item} />
               ) : item?.isPlaylist || item?.type ? (
-                // <PlaylistCarousel data={item} />
-                <div></div>
+                <PlaylistCarousel data={item} />
               ) : (
                 <VideoCarousel title={item?.title} slug={item?.title_slug} data={item?.data?.list || []} id={item?.id} />
               )}
